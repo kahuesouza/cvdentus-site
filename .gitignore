@@ -1,0 +1,25 @@
+# Editor / project state — not part of the site
+CLAUDE.md
+github.md
+.image-slots.state.json
+.thumbnail
+
+# Frozen pre-conversion bundles (replaced by the .dc.html pages, nothing links to them)
+Optymus-Landing.html
+Clinical-Plus-Landing.html
+DentSurg-Pro-Landing.html
+Lupas-Landing.html
+
+# Scratch / working files
+logo-test.html
+caneta_clinical_mao_isa-msnncrz2-pnwm.png
+dentsurg_gpt_pra_ia-png_2k_202608051126-msg6o74s-xn81.jpeg
+dentsurg_pro_4clip-msdg1wpg-blfv.png
+dentsurg_pro_4clip-msdg291q-2s77.png
+diamante-cvd-msg2cs9f-xeeb.png
+scan_refs.py
+
+# Alternate / historical builds and captures
+/export/
+/scraps/
+/screenshots/

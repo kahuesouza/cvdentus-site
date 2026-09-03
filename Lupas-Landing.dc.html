@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  .cvd-glow-btn{position:relative;z-index:0;}
+  .cvd-glow-btn::before{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-2;pointer-events:none;transition:transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);}
+  .cvd-glow-btn::after{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-3;filter:blur(18px);transform:translate3d(0,0,0) scale(0.92);}
+  .cvd-glow-btn:hover::after{filter:blur(28px);}
+  .cvd-glow-btn:hover::before{transform:rotate(-180deg);}
+  .cvd-glow-btn:active::before{scale:0.7;}
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #121212; }
+    a { color: #4C7FFF; text-decoration: none; }
+    a:hover { color: #7DA0FF; }
+    ::selection { background: #0047FF; color: #fff; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes curtainOut { 0% { opacity: 1; transform: translateY(0); } 55% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-6%); } }
+    @keyframes introLogo { 0% { opacity: 0; transform: scale(0.82); letter-spacing: 0.05em; } 45% { opacity: 1; transform: scale(1); letter-spacing: 0; } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes introLine { 0%, 100% { transform: scaleX(0); } 20%, 55% { transform: scaleX(1); } }
+  </style>
+</helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#121212"></rect><circle cx="82" cy="100" r="26" fill="none" stroke="#4C7FFF" stroke-width="8"></circle><circle cx="126" cy="100" r="26" fill="none" stroke="#4C7FFF" stroke-width="8"></circle></svg></template>
+
+<div style="{{ themeVars }}font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--ink); overflow-x:hidden;">
+
+  <sc-if value="{{ introVisible }}" hint-placeholder-val="{{ true }}">
+    <div sc-camel-on-animation-end="{{ onIntroEnd }}" style="position:fixed; inset:0; z-index:999; background:#000; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; animation:curtainOut 2.1s cubic-bezier(.76,0,.24,1) forwards;">
+      <img loading="lazy" decoding="async" src="uploads/LOGO_CVD_LUPAS_branco.svg" alt="CVD Lupas" style="height:40px; width:auto; object-fit:contain; filter:brightness(0) invert(1); animation:introLogo 1.3s cubic-bezier(.16,1,.3,1) forwards;">
+      <div style="width:64px; height:2px; background:#0047FF; transform-origin:center; animation:introLine 2.1s cubic-bezier(.76,0,.24,1) forwards;"></div>
+    </div>
+  </sc-if>
+
+  <nav style="position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px clamp(20px,5vw,64px); background:{{ navBg }}; border-bottom:1px solid var(--line); will-change:auto;">
+    <a href="./CVDentus.dc.html" style="cursor:pointer; text-decoration:none; color:{{ logoColor }}; display:flex; align-items:center;"><svg viewBox="0 0 424.75 283.35" style="height:30px; width:auto;" fill="currentColor"><path d="M397.38,40.72h-52.39L313.97,0h-40.21l17.63,23.15h9.45l21.7,28.49-86.67,112.06-6.65-8.63-13.68,17.69,20.3,26.34,104.9-135.62h55.96c2.92,0,5.28,2.36,5.28,5.28v82.47c0,2.92-2.36,5.29-5.28,5.29h-90.93v-25.19l-22.75,29.42v18.52h114.35c15.11,0,27.36-12.25,27.36-27.36v-83.81c0-15.11-12.25-27.36-27.36-27.36"></path><polygon points="120.08 48.89 209.47 164.87 209.47 129.44 149.19 51.22 170.8 23.15 209.47 23.15 209.47 0 157.72 0 120.08 48.89"></polygon><path d="M118.12,23.15h130.05l21.7,28.49-86.67,112.06L96.51,51.22l21.61-28.08ZM28.03,63.47h50.61l104.53,135.62,115.77-149.68L261.29,0H105.04l-31.34,40.72H27.36c-15.11,0-27.36,12.25-27.36,27.36v83.81c0,15.12,12.25,27.36,27.36,27.36h121.26l-17.52-22.75H28.03c-2.92,0-5.28-2.37-5.28-5.29v-82.47c0-2.92,2.36-5.28,5.28-5.28"></path></svg></a>
+    <div style="{{ navLinksStyle }}">
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.home }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.diamantes }}</a>
+      <a href="./CVDentus.dc.html?page=piezos" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.piezos }}</a>
+      <span sc-camel-on-click="{{ toggleProdutos }}" style="color:var(--ink); cursor:pointer; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.produtos }} ▾</span>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.blog }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.suporte }}</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="display:flex; align-items:center; gap:2px; border:1px solid var(--line); border-radius:8px; padding:2px;">
+        <sc-for list="{{ langOptions }}" as="lg" hint-placeholder-count="3">
+          <span onClick="{{ lg.onClick }}" style="{{ lg.style }}">{{ lg.label }}</span>
+        </sc-for>
+      </div>
+      <label style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; flex-shrink:0; cursor:pointer;">
+        <input type="checkbox" checked="{{ isLightTheme }}" onChange="{{ toggleTheme }}" style="opacity:0; width:0; height:0; position:absolute;" />
+        <sc-if value="{{ isLightTheme }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:linear-gradient(180deg,#4dc9ff,#8fdcff);">
+            <svg viewBox="0 0 16 16" style="position:absolute; bottom:2px; right:3px; width:13px; height:13px;" fill="#fff"><path transform="matrix(.77976 0 0 .78395-299.99-418.63)" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path></svg>
+            <span style="position:absolute; top:3px; left:24px; width:16px; height:16px; border-radius:50%; background:#ffd35c; box-shadow:0 0 8px 2px rgba(255,211,92,.7);"></span>
+          </span>
+        </sc-if>
+        <sc-if value="{{ isDarkTheme }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:#1a1d29;">
+            <span style="position:absolute; top:5px; left:8px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:14px; left:14px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:8px; left:19px; width:1.5px; height:1.5px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:3px; left:4px; width:16px; height:16px; border-radius:50%; background:#e8ecf5; box-shadow:inset -3px -1px 0 0 #c7ccda;"></span>
+          </span>
+        </sc-if>
+      </label>
+      <div style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg></div>
+      <div style="position:relative; cursor:pointer; color:var(--ink); display:flex; align-items:center;">
+        <svg viewBox="0 0 24 24" style="width:21px; height:21px;" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9" cy="20" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="17" cy="20" r="1.3" fill="currentColor" stroke="none"></circle></svg>
+        <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute; top:-6px; right:-8px; background:var(--accent2); color:#fff; font-size:10px; font-weight:700; min-width:16px; height:16px; border-radius:999px; display:flex; align-items:center; justify-content:center; padding:0 3px;">{{ cartCount }}</span>
+        </sc-if>
+      </div>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <div sc-camel-on-click="{{ toggleMobileMenu }}" style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:22px; height:22px;" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></div>
+      </sc-if>
+    </div>
+  </nav>
+
+  <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; top:64px; left:0; right:0; background:var(--surface); border-bottom:1px solid var(--line); box-shadow:0 24px 48px rgba(20,21,26,0.14); z-index:79; display:flex; flex-direction:column; padding:12px clamp(20px,5vw,64px);">
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.home }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.diamantes }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.piezos }}</a>
+      <span sc-camel-on-click="{{ toggleProdutos }}" style="color:var(--ink); padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500; cursor:pointer;">{{ t.produtos }} ▾</span>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.blog }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; font-weight:500;">{{ t.suporte }}</a>
+    </div>
+  </sc-if>
+
+<sc-if value="{{ produtosOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; top:64px; left:0; right:0; background:#14151a; z-index:80; display:grid; grid-template-columns:repeat(5,minmax(160px,1fr)); grid-auto-rows:auto; gap:24px 32px; padding:32px clamp(20px,5vw,64px) 36px; max-height:70vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,0.35);">
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Piezos</div>
+          <a href="./Optymus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">OPTYMUS</a>
+          <a href="./Clinical-Plus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Clinical Plus</a>
+          <a href="./DentSurg-Pro-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">DentSurg Pro</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Pontas</div>
+          <a href="./CVDentus.dc.html?cat=clinicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Clínicas</a>
+          <a href="./CVDentus.dc.html?cat=cirurgicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Cirúrgicas</a>
+          <a href="./Elo-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Compatíveis</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Brocas</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Brocas de Alta Rotação</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Lupas</div>
+          <a href="./Lupas-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Lupas Odontológicas</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Acessórios</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Acessórios</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Kits</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Kits</a>
+      </div>
+  </div>
+</sc-if>
+
+  <!-- HERO -->
+  <section style="position:relative; padding:150px clamp(20px,5vw,64px) 90px; overflow:hidden; background:linear-gradient(180deg, #0b0d12 0%, #14151a 60%, #1a1d29 100%);">
+    <img loading="lazy" decoding="async" src="uploads/CAPA_LUPAS.png" alt="Lupas CVDentus com estojos e acessórios" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 40%; opacity:1; z-index:0;">
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(11,13,18,0.55) 0%, rgba(11,13,18,0.85) 70%, rgba(26,29,41,1) 100%); z-index:0;"></div>
+    <div style="position:relative; z-index:1; max-width:1040px; margin:0 auto;">
+      <img loading="lazy" decoding="async" src="uploads/LOGO_CVD_LUPAS_branco.svg" alt="CVD Lupas" style="width:min(560px,80vw); height:auto; margin-bottom:32px; filter:brightness(0) invert(1);">
+      <p style="color:rgba(255,255,255,0.78); font-size:17px; line-height:1.6; max-width:620px; margin:0 0 32px;">Lupas binoculares flip-up e TTL, com armações compatíveis vendidas separadamente. Escolha o modelo e solicite um orçamento com um consultor CVDentus.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:12px;">
+        <a href="#flip" style="display:inline-flex; align-items:center; padding:12px 24px; border-radius:999px; background:#fff; color:#0b0d12; text-decoration:none; font-size:14px; font-weight:700;">Modelos Flip</a>
+        <a href="#ttl" style="display:inline-flex; align-items:center; padding:12px 24px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); color:#fff; text-decoration:none; font-size:14px; font-weight:700;">Modelos TTL</a>
+        <a href="#fotoforos" style="display:inline-flex; align-items:center; padding:12px 24px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); color:#fff; text-decoration:none; font-size:14px; font-weight:700;">Fotóforos</a>
+        <a href="#armacoes" style="display:inline-flex; align-items:center; padding:12px 24px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); color:#fff; text-decoration:none; font-size:14px; font-weight:700;">Armações</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section style="padding:100px clamp(20px,5vw,64px); background:var(--bg);">
+    <div style="max-width:1360px; margin:0 auto;">
+      <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; text-align:center;">Por que adquirir uma lupa CVDentus</div>
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3vw,36px); line-height:1.15; color:var(--ink); margin:0 0 56px; text-align:center;">Diferenciais que se sentem na cadeira clínica</h2>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:28px;">
+        <div style="flex:1 1 230px; max-width:280px; border:1px solid var(--line); border-radius:20px; padding:28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="1.6"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ink); line-height:1.35;">Veja detalhes que fazem diferença no resultado clínico.</div>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">Óptica de alta precisão: imagem clara e nítida, com distorção mínima e ausência de aberração cromática — bordas bem definidas em cada estrutura clínica.</p>
+        </div>
+        <div style="flex:1 1 230px; max-width:280px; border:1px solid var(--line); border-radius:20px; padding:28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="1.6"><path d="M2 12c2.5-4 6-6 10-6s7.5 2 10 6c-2.5 4-6 6-10 6s-7.5-2-10-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ink); line-height:1.35;">Mais visão. Menos necessidade de reposicionamento.</div>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">Campo de visão amplo — até 110–170 mm na linha Galileu e 60–75 mm na Kepler, conforme a ampliação escolhida.</p>
+        </div>
+        <div style="flex:1 1 230px; max-width:280px; border:1px solid var(--line); border-radius:20px; padding:28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ink); line-height:1.35;">Nitidez que acompanha o seu movimento.</div>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">Profundidade de campo de até 300 mm na linha Galileu — a região de trabalho permanece nítida durante os movimentos clínicos.</p>
+        </div>
+        <div style="flex:1 1 230px; max-width:280px; border:1px solid var(--line); border-radius:20px; padding:28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="1.6"><path d="M20 6c-4 0-9 2-13 6-2 2-3.5 4-4 5.5"></path><path d="M17 3c0 4-2 9-6 13-2 2-4 3.5-5.5 4"></path></svg>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ink); line-height:1.35;">Leveza para trabalhar por horas. Conforto para trabalhar por anos.</div>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">A partir de 30 g na linha Galileu e 50 g na Kepler.</p>
+        </div>
+        <div style="flex:1 1 230px; max-width:280px; border:1px solid var(--line); border-radius:20px; padding:28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="1.6"><circle cx="12" cy="4.5" r="2"></circle><path d="M12 6.5v6l4 6"></path><path d="M12 12.5l-4 6"></path></svg>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ink); line-height:1.35;">Enxergue melhor sem precisar se curvar para enxergar.</div>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">A óptica ERGO usa prismas de deflexão para direcionar o campo visual para baixo, com ampliações de 3,5x a 6,5x — cabeça mais ereta, postura mais neutra.</p>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:48px;">
+        <a href="#cadastro" class="cvd-glow-btn" style="display:inline-block; padding:3px; border-radius:999px; text-decoration:none;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:700; font-size:18px; color:#fff; background:#14151a; padding:20px 44px; border-radius:999px;">Solicitar orçamento</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGNOSTICO -->
+  <section style="padding:100px clamp(20px,5vw,64px); background:var(--bg);">
+    <div style="max-width:1360px; margin:0 auto; display:grid; grid-template-columns:{{ diagCols }}; gap:56px; align-items:center;">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:12px;">Ampliação e diagnóstico</div>
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3vw,36px); line-height:1.15; color:var(--ink); margin:0 0 20px;">Diagnóstico preciso</h2>
+        <p style="color:var(--muted); font-size:16px; line-height:1.7; margin:0;">Cada faixa de aumento revela um nível diferente de detalhe clínico — de 2,5x até 6,5x mais perto, permitindo identificar cáries incipientes, trincas, margens de restauração e outros achados que passariam despercebidos a olho nu.</p>
+      </div>
+      <img loading="lazy" decoding="async" src="uploads/lupas-magnificacao-grid.png" alt="Comparativo de aumentos de lupa, de 2.5x a 6.5x" style="width:100%; border-radius:20px; border:1px solid var(--line); display:block;">
+    </div>
+  </section>
+
+  <!-- ERGONOMIA -->
+  <section style="padding:20px clamp(20px,5vw,64px) 100px; background:var(--bg);">
+    <div style="max-width:1360px; margin:0 auto; display:grid; grid-template-columns:{{ diagColsRev }}; gap:56px; align-items:center;">
+      <img loading="lazy" decoding="async" src="uploads/deixe_o_fundo_desfocado_2K_202608281528.jpeg" alt="Dentista usando lupa em postura ereta durante procedimento" style="width:100%; max-width:520px; margin:0 auto; display:block; border-radius:20px; {{ postureOrder }}">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:12px;">Por que adquirir uma lupa CVDentus</div>
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3vw,36px); line-height:1.15; color:var(--ink); margin:0 0 20px;">Ergonomia e postura</h2>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:15px; color:var(--ink); margin-bottom:4px;">Otimização da posição de trabalho</div>
+            <p style="color:var(--muted); font-size:15px; line-height:1.65; margin:0;">O uso da lupa força o profissional a manter uma distância de trabalho adequada, corrigindo naturalmente a postura sentada durante todo o procedimento.</p>
+          </div>
+          <div>
+            <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:15px; color:var(--ink); margin-bottom:4px;">Proteção da coluna, pescoço e visão</div>
+            <p style="color:var(--muted); font-size:15px; line-height:1.65; margin:0;">Preserva a visão eliminando o esforço visual e proporciona uma imagem nítida sem a necessidade de inclinação excessiva, reduzindo drasticamente a curvatura da coluna cervical e lombar.</p>
+          </div>
+          <div>
+            <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:15px; color:var(--ink); margin-bottom:4px;">Prevenção de lesões</div>
+            <p style="color:var(--muted); font-size:15px; line-height:1.65; margin:0;">A postura ereta minimiza a tensão muscular, prevenindo dores crônicas e doenças ocupacionais que podem comprometer a longevidade da carreira.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLIP -->
+  <section id="flip" style="padding:100px clamp(20px,5vw,64px) 40px; background:var(--bg); scroll-margin-top:80px;">
+    <div style="max-width:1360px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 12px; text-align:center;">Modelos Flip</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 auto 44px; max-width:640px; text-align:center;">Lupas binoculares flip-up, com oculares articulados sobre a armação.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px;">
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-ergo-1.jpg" alt="Lupa Flip Ergo" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Ergo</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.f_ergo }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 161750.png" alt="Lupa Flip Kepler" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Kepler</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.f_kepler }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-galileu-5.jpg" alt="Lupa Flip Galileu" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Galileu</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.f_galileu }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TTL -->
+  <section id="ttl" style="padding:80px clamp(20px,5vw,64px) 40px; background:var(--bg); scroll-margin-top:80px;">
+    <div style="max-width:1360px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 12px; text-align:center;">Modelos TTL</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 auto 44px; max-width:640px; text-align:center;">Oculares embutidos na lente, alinhados ao eixo visual do usuário.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px;">
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 150346.png" alt="Lupa TTL Ergo" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Ergo</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.t_ergo }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-kepler-9.jpg" alt="Lupa TTL Kepler" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Kepler</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.t_kepler }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 150359.png" alt="Lupa TTL Galileu" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">Galileu</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.t_galileu }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOTOFOROS -->
+  <section id="fotoforos" style="padding:80px clamp(20px,5vw,64px) 40px; background:var(--bg); scroll-margin-top:80px;">
+    <div style="max-width:1360px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 12px; text-align:center;">Fotóforos</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 auto 44px; max-width:640px; text-align:center;">Iluminação LED de alto rendimento acoplada à lupa, com bateria portátil e controle de intensidade.</p>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:28px;">
+        <div style="flex:1 1 280px; max-width:400px; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/JC-M06-B.png" alt="Fotóforo JC-M06-B — Kit Starter" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">JC-M06-B — Kit Starter</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.p_jcm06b }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="flex:1 1 280px; max-width:400px; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/JC-M06-C.png" alt="Fotóforo JC-M06-C — Kit Intermediário" style="width:100%; height:240px; object-fit:contain; background:var(--surface); display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">JC-M06-C — Kit Intermediário</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.p_jcm06c }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="flex:1 1 280px; max-width:400px; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/JG-M06C_01.png" alt="Fotóforo JG-M06C — Bateria de Pescoço" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">JG-M06C — Bateria de Pescoço</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.p_jgm06c }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+        <div style="flex:1 1 280px; max-width:400px; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column;">
+          <img loading="lazy" decoding="async" src="uploads/JG-M07C_01.png" alt="Fotóforo JG-M07C — Bateria de Pescoço" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; color:var(--ink); margin:0;">JG-M07C — Bateria de Pescoço</h3>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ open.p_jgm07c }}" class="cvd-glow-btn" style="border:none; background:transparent; display:block; width:100%; padding:3px; border-radius:999px; cursor:pointer; margin-top:8px;"><span style="display:block; text-align:center; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Saiba mais</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARMACOES -->
+  <section id="armacoes" style="padding:80px 0 100px; background:var(--bg); scroll-margin-top:80px;">
+    <div style="max-width:1360px; margin:0 auto; padding:0 clamp(20px,5vw,64px);">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 12px; text-align:center;">Armações disponíveis</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 auto 36px; max-width:640px; text-align:center;">Vendidas separadamente. Todas compatíveis com fixação de lupas clip-on e TTL.</p>
+    </div>
+    <div style="position:relative; max-width:1360px; margin:0 auto;">
+      <button sc-camel-on-click="{{ scrollFramesLeft }}" aria-label="Ver armações anteriores" style="position:absolute; left:clamp(4px,2vw,24px); top:100px; z-index:2; width:44px; height:44px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(0,0,0,0.18);"><svg viewBox="0 0 24 24" style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"></path></svg></button>
+      <button sc-camel-on-click="{{ scrollFramesRight }}" aria-label="Ver mais armações" style="position:absolute; right:clamp(4px,2vw,24px); top:100px; z-index:2; width:44px; height:44px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(0,0,0,0.18);"><svg viewBox="0 0 24 24" style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg></button>
+      <div ref="{{ framesRef }}" style="display:flex; gap:20px; overflow-x:auto; scroll-behavior:smooth; scroll-snap-type:x mandatory; padding:4px clamp(20px,5vw,64px) 24px; scrollbar-width:none;">
+        <div sc-camel-on-click="{{ open.a_j04b }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-j04-black-13.jpg" alt="Armação J04 Black" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J04 Black</h3>
+          </div>
+        </div>
+        <div sc-camel-on-click="{{ open.a_j04s }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-j04-silver-15.jpg" alt="Armação J04 Silver" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J04 Silver</h3>
+          </div>
+        </div>
+        <div sc-camel-on-click="{{ open.a_j22 }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 161555.png" alt="Armação J22" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J22</h3>
+          </div>
+        </div>
+        <div sc-camel-on-click="{{ open.a_j23 }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 161619.png" alt="Armação J23" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J23</h3>
+          </div>
+        </div>
+        <div sc-camel-on-click="{{ open.a_j24b }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/lupas-j24-black-21.jpg" alt="Armação J24 Black" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J24 Black</h3>
+          </div>
+        </div>
+        <div sc-camel-on-click="{{ open.a_j24s }}" style="flex:0 0 260px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--surface); cursor:pointer;">
+          <img loading="lazy" decoding="async" src="uploads/Captura de tela 2026-08-28 161637.png" alt="Armação J24 Silver" style="width:100%; height:200px; object-fit:cover; display:block;">
+          <div style="padding:18px 20px 20px;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin:0;">J24 Silver</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ hasSelected }}" hint-placeholder-val="{{ false }}">
+    <div sc-camel-on-click="{{ closeModal }}" style="position:fixed; inset:0; z-index:120; background:rgba(0,0,0,0.78); display:flex; align-items:flex-start; justify-content:center; overflow:auto; padding:5vh 16px;">
+      <div sc-camel-on-click="{{ stopClick }}" style="{{ modalCardStyle }}">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px;">
+          <div>
+            <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">{{ sel.kind }}</div>
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(24px,3vw,32px); color:var(--ink); margin:0;">{{ sel.title }}</h3>
+          </div>
+          <button sc-camel-on-click="{{ closeModal }}" style="border:1px solid var(--line); background:var(--bg); color:var(--ink); width:38px; height:38px; border-radius:999px; cursor:pointer; font-size:18px; line-height:1; flex-shrink:0;">×</button>
+        </div>
+        <p style="color:var(--muted); font-size:15px; line-height:1.65; margin:18px 0 26px; max-width:760px;">{{ sel.desc }}</p>
+        <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+          <video ref="{{ setModalVideoEl }}" preload="auto" autoPlay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsInline="{{ true }}" controls="{{ true }}" style="{{ modalVideoStyle }}"></video>
+        </sc-if>
+        <div style="{{ galleryStyle }}">
+          <sc-if value="{{ sel.images.0 }}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{ sel.images.0 }}" alt="{{ sel.title }}" style="{{ modalImgStyleAt.0 }}"></sc-if>
+          <sc-if value="{{ sel.images.1 }}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{ sel.images.1 }}" alt="{{ sel.title }}" style="{{ modalImgStyleAt.1 }}"></sc-if>
+          <sc-if value="{{ sel.images.2 }}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{ sel.images.2 }}" alt="{{ sel.title }}" style="{{ modalImgStyleAt.2 }}"></sc-if>
+        </div>
+        <a href="#cadastro" sc-camel-on-click="{{ closeModal }}" class="cvd-glow-btn" style="display:inline-block; margin-top:28px; padding:3px; border-radius:999px; text-decoration:none;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px 30px; border-radius:999px;">Solicitar um Orçamento</span></a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- CADASTRO -->
+  <section id="cadastro" style="position:relative; padding:100px clamp(20px,5vw,64px); overflow:hidden; background:linear-gradient(135deg, #04255c 0%, #0d5aa8 55%, #1476c4 100%); scroll-margin-top:70px;">
+    <div style="position:relative; z-index:1; max-width:1040px; margin:0 auto; display:grid; grid-template-columns:{{ cadastroCols }}; gap:44px; align-items:center;">
+      <div>
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(28px,3.6vw,40px); line-height:1.12; color:#fff; margin:0 0 18px;">Solicite um orçamento</h2>
+        <p style="color:rgba(255,255,255,0.88); font-size:16px; line-height:1.65; margin:0;">Informe seus dados e um consultor CVDentus entra em contato para indicar o modelo, o aumento e a armação ideais para o seu tipo de procedimento.</p>
+      </div>
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff; border-radius:20px; padding:48px 36px; text-align:center; box-shadow:0 30px 70px rgba(0,0,0,0.3);">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:21px; margin:0 0 8px; color:#14151a;">Recebemos sua solicitação.</h3>
+          <p style="color:#6B7280; font-size:14px; margin:0;">Nossa equipe entrará em contato em até 1 dia útil.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form sc-camel-on-submit="{{ handleSubmit }}" style="background:#fff; border-radius:16px; padding:24px 22px; display:grid; grid-template-columns:1fr; gap:10px; box-shadow:0 30px 70px rgba(0,0,0,0.3);">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:16px; margin-bottom:1px; color:#14151a;">Fale com um Consultor</div>
+          <input required="" type="text" name="nome" placeholder="Nome" style="width:100%; box-sizing:border-box; background:#F3F5F8; border:1px solid rgba(0,0,0,0.10); border-radius:8px; padding:10px 12px; color:#14151a; font-size:13px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="email" name="email" placeholder="E-mail" style="width:100%; box-sizing:border-box; background:#F3F5F8; border:1px solid rgba(0,0,0,0.10); border-radius:8px; padding:10px 12px; color:#14151a; font-size:13px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="tel" name="telefone" placeholder="WhatsApp" style="width:100%; box-sizing:border-box; background:#F3F5F8; border:1px solid rgba(0,0,0,0.10); border-radius:8px; padding:10px 12px; color:#14151a; font-size:13px; font-family:'Montserrat',sans-serif;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; color:#14151a; cursor:pointer;">
+              <input required="" type="checkbox" name="consentimento" style="margin-top:2px; accent-color:#0047FF; flex-shrink:0;">
+              <span>Eu concordo em receber comunicações.</span>
+            </label>
+            <p style="margin:0; font-size:11.5px; line-height:1.5; color:#6B7280;">Ao enviar, você concorda em receber contato da CVDentus sobre as Lupas CVD. Consulte nossa <a href="#" style="color:#0047FF;">Política de Privacidade</a>.</p>
+          </div>
+          <button type="submit" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; margin-top:2px; display:block; width:100%;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:13px; color:#fff; background:#14151a; padding:12px; border-radius:999px;">Solicitar Orçamento</span></button>
+          <p style="margin:0; font-size:10.5px; line-height:1.4; color:#6B7280; text-align:center;">Um consultor da CVDentus entra em contato pelo WhatsApp em até 1 dia útil.</p>
+        </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:48px clamp(20px,5vw,64px); background:var(--surface); border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <img loading="lazy" decoding="async" src="uploads/cvdentus-logo.svg" alt="CVDentus" style="height:24px; width:auto;">
+    <div style="color:var(--muted); font-size:13px;">© 2026 CVDentus. Todos os direitos reservados.</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  framesRef = React.createRef();
+  setModalVideoEl(el) { this._modalVideoEl = el; this.applyModalVideo(); }
+
+  applyModalVideo() {
+    var v = this._modalVideoEl;
+    if (!v) return;
+    var MODELS = this.getModels();
+    var picked = MODELS[this.state.selected] || null;
+    if (picked && picked.video) {
+      if (!v.src || v.src.indexOf(picked.video) === -1) {
+        v.src = picked.video;
+        v.poster = (picked.images && picked.images[0]) || '';
+        v.muted = true;
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      }
+    } else if (v.hasAttribute('src')) {
+      v.removeAttribute('src');
+    }
+  }
+  state = { produtosOpen: false, produtosSub: 'piezos', submitted: false, isMobile: (typeof window !== 'undefined' && window.innerWidth < 780), introVisible: true, theme: 'dark', lang: 'pt', mobileMenuOpen: false, cartCount: 0, selected: null };
+
+  scrollFramesBy(dx) {
+    var el = this.framesRef.current;
+    if (el) el.scrollBy({ left: dx, behavior: 'smooth' });
+  }
+
+  openModel(k) { this.setState({ selected: k }); }
+
+  closeModal() { this.setState({ selected: null }); }
+
+  toggleMobileMenu() { this.setState(function (s) { return { mobileMenuOpen: !s.mobileMenuOpen }; }); }
+
+  toggleTheme() { var next = this.state.theme === 'light' ? 'dark' : 'light'; this.setState({ theme: next }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_theme', next); }
+
+  setLang(l) { this.setState({ lang: l }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_lang', l); }
+
+  toggleProdutos() { this.setState(function (s) { return { produtosOpen: !s.produtosOpen, produtosSub: 'piezos' }; }); }
+
+  setProdutosSub(sub) { this.setState({ produtosSub: sub }); }
+
+  onIntroEnd() { this.setState({ introVisible: false }); }
+
+  handleResize() {
+    var m = window.innerWidth < 780;
+    if (m !== this.state.isMobile) this.setState({ isMobile: m });
+  }
+
+  componentDidMount() {
+    if (typeof localStorage !== 'undefined') {
+      var st = localStorage.getItem('cvd_theme');
+      var sl = localStorage.getItem('cvd_lang');
+      if (st || sl) this.setState({ theme: st || this.state.theme, lang: sl || this.state.lang });
+    }
+    this.resizeHandler = this.handleResize.bind(this);
+    window.addEventListener('resize', this.resizeHandler);
+    document.querySelectorAll('video[autoplay]').forEach(function (v) {
+      v.muted = true; v.volume = 0; v.loop = true; v.playsInline = true;
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    });
+  }
+
+
+
+getModels() {
+  var P = 'uploads/lupas-';
+    var MODELS = {
+      f_ergo: { kind: 'Modelo Flip', title: 'Ergo', desc: 'Lupa binocular flip-up com armação clip-on universal. Oculares em prisma com ajuste independente de distância interpupilar (escala graduada em cada lado) e mecanismo de báscula para liberar o campo de visão sem remover a armação.', images: [P+'parallax-01.jpg', P+'ergo-1.jpg', P+'ergo-2.jpg'] },
+      f_kepler: { kind: 'Modelo Flip', title: 'Kepler', desc: 'Lupa binocular flip-up sobre armação em titânio de haste dupla, com fixação central por clipe e trilho graduado independente para cada olho. Oculares cilíndricos em ângulo, otimizados para foco de precisão em procedimentos prolongados.', images: ['uploads/Captura de tela 2026-08-28 161750.png', P+'kepler-3.jpg', P+'kepler-4.jpg'] },
+      f_galileu: { kind: 'Modelo Flip', title: 'Galileu', desc: 'Lupa binocular flip-up com corpo compacto e oculares de maior diâmetro, fixação central sobre a armação e trilho lateral para ajuste independente da distância interpupilar. Indicada para maior campo de visão em procedimentos de rotina.', images: [P+'parallax-03.jpg', P+'galileu-5.jpg', P+'galileu-6.jpg'] },
+      t_ergo: { kind: 'Modelo TTL', title: 'Ergo', desc: 'Lupa TTL (through-the-lens) com oculares embutidos diretamente na armação, alinhados ao eixo visual do usuário. Estrutura rígida e compacta, sem articulação de báscula, para máxima estabilidade óptica.', images: ['uploads/Captura de tela 2026-08-28 150346.png', P+'parallax-04.jpg', P+'ergo-8.jpg'] },
+      t_kepler: { kind: 'Modelo TTL', title: 'Kepler', desc: 'Lupa TTL com oculares embutidos na armação em ângulo fixo, corpo cilíndrico revestido e escala de distância interpupilar gravada na haste. Estrutura enxuta, sem báscula, para uso contínuo de longa duração.', images: [P+'parallax-05.jpg', P+'kepler-9.jpg', P+'kepler-10.jpg'] },
+      t_galileu: { kind: 'Modelo TTL', title: 'Galileu', desc: 'Lupa TTL com oculares em anel embutidos diretamente na armação, corpo curto e compacto para menor peso frontal. Escala de distância interpupilar gravada na haste, sem articulação de báscula.', images: ['uploads/Captura de tela 2026-08-28 150359.png', P+'parallax-06.jpg', P+'galileu-12.jpg'] },
+      a_j04b: { kind: 'Armação', title: 'J04 Black', desc: 'Armação em acetato fosco preto, haste reta com acabamento em metal escovado e ponte reforçada. Estrutura compatível com fixação de lupas clip-on e TTL.', images: [P+'parallax-07.jpg', P+'j04-black-13.jpg', P+'j04-black-14.jpg'] },
+      a_j04s: { kind: 'Armação', title: 'J04 Silver', desc: 'Armação em acetato preto com hastes em metal acabamento prata escovado e ponte reforçada. Estrutura compatível com fixação de lupas clip-on e TTL.', images: [P+'parallax-08.jpg', P+'j04-silver-15.jpg', P+'j04-silver-16.jpg'] },
+      a_j22: { kind: 'Armação', title: 'J22', desc: 'Armação em metal acabamento grafite escovado, ponte reforçada com fixação central e hastes finas retas. Estrutura compatível com fixação de lupas clip-on e TTL.', images: ['uploads/Captura de tela 2026-08-28 161555.png', P+'j22-17.jpg', P+'j22-18.jpg'] },
+      a_j23: { kind: 'Armação', title: 'J23', desc: 'Armação em metal preto fosco com formato arredondado, ponte reforçada com fixação central e hastes retas em acabamento fosco. Estrutura compatível com fixação de lupas clip-on e TTL.', images: ['uploads/Captura de tela 2026-08-28 161619.png', P+'j23-19.jpg', P+'j23-20.jpg'] },
+      a_j24b: { kind: 'Armação', title: 'J24 Black', desc: 'Armação clubmaster em metal preto fosco com hastes em prata escovado, ponte reforçada com fixação central. Estrutura compatível com fixação de lupas clip-on e TTL.', images: [P+'parallax-11.jpg', P+'j24-black-21.jpg', P+'j24-black-22.jpg'] },
+      a_j24s: { kind: 'Armação', title: 'J24 Silver', desc: 'Armação clubmaster em acetato azul fosco com hastes em prata escovado, ponte reforçada com fixação central. Estrutura compatível com fixação de lupas clip-on e TTL.', images: ['uploads/Captura de tela 2026-08-28 161637.png', P+'j24-silver-23.jpg', P+'j24-silver-24.jpg'] },
+      p_jcm06b: { kind: 'Fotóforo · Kit Starter', title: 'JC-M06-B', desc: 'Fotóforo LED de 30.000 lumens com bateria de 4 horas de duração. Conjunto de entrada para quem está montando o primeiro setup de magnificação: cabeçote leve em alumínio anodizado, clip universal para fixação na armação ou na lupa, cabo flexível e bateria em estojo de cinto com botão rotativo de ajuste de intensidade. Feixe concentrado e uniforme, sem sombra no campo de trabalho.', images: ['uploads/JC-M06-B.png', 'uploads/JC-M06-B_02.png'], video: 'uploads/JC-M06-B_01.mp4' },
+      p_jcm06c: { kind: 'Fotóforo · Kit Intermediário', title: 'JC-M06-C', desc: 'Fotóforo LED de 30.000 lumens com bateria de 12 horas de duração — autonomia para um dia inteiro de atendimentos sem recarga. Bateria externa de maior capacidade com indicador de carga, ajuste contínuo de intensidade e mesmo cabeçote compacto com clip universal, compatível com lupas flip-up e TTL.', images: ['uploads/JC-M06-C.png', 'uploads/JC-M06-C_02.png'], video: 'uploads/JC-M06-C_02.mp4' },
+      p_jgm06c: { kind: 'Fotóforo · Bateria de pescoço', title: 'JG-M06C', desc: 'Fotóforo LED de 30.000 lumens com bateria de pescoço de 4 a 6 horas de duração e controle de 5 intensidades. A bateria fica apoiada nos ombros, eliminando o peso no cinto e o cabo pendurado ao longo do corpo. Acionamento por botão nas duas extremidades e cabo curto até o cabeçote, com clip universal.', images: ['uploads/JG-M06C_01.png', 'uploads/JG-M06C_02.png'], video: 'uploads/JG-M06C.mp4' },
+      p_jgm07c: { kind: 'Fotóforo · Bateria de pescoço', title: 'JG-M07C', desc: 'Fotóforo LED de 85.000 lux com bateria de pescoço de 4 a 6 horas de duração e controle de 5 intensidades. Versão de maior iluminância da linha, indicada para procedimentos cirúrgicos e de alta precisão que exigem campo intensamente iluminado. Mesmo formato ergonômico de bateria cervical, com cabeçote de foco ajustável e clip universal.', images: ['uploads/JG-M07C_01.png', 'uploads/JG-M07C_02.png'], video: 'uploads/JG-M07C.mp4' }
+    };
+  return MODELS;
+}
+
+
+
+  handleSubmit(e) { e.preventDefault(); this.setState({ submitted: true }); }
+
+  renderVals() {
+    var self = this;
+    var theme = this.state.theme || 'dark';
+    var isLightTheme = theme === 'light';
+    var themeVars = isLightTheme
+      ? '--bg:#FFFFFF; --ink:#14161A; --muted:#6B7280; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(0,0,0,0.10); --surface:#F3F5F8;'
+      : '--bg:#121212; --ink:#F1F5F9; --muted:#9AA1AC; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(255,255,255,0.12); --surface:#1A1D24;';
+    var lang = this.state.lang || 'pt';
+    var I18N = {
+      pt: { home: 'Home', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Suporte', produtos: 'Produtos' },
+      es: { home: 'Inicio', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Soporte', produtos: 'Productos' },
+      en: { home: 'Home', diamantes: 'Diamonds', piezos: 'Piezos', blog: 'Blog', suporte: 'Support', produtos: 'Products' }
+    };
+    var isMobile = this.state.isMobile;
+    var langOptions = ['pt','es','en'].map(function (l) {
+      var active = lang === l;
+      return { key: l, label: l.toUpperCase(), onClick: function () { self.setLang(l); }, style: "cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:5px 9px;border-radius:6px;" + (active ? 'background:var(--accent2);color:#fff' : 'color:var(--muted)') };
+    });
+    var MODELS = this.getModels();
+
+    var open = {};
+    Object.keys(MODELS).forEach(function (k) { open[k] = function () { self.openModel(k); }; });
+    var picked = MODELS[this.state.selected] || null;
+    var sel = picked || { kind: '', title: '', desc: '', images: [], video: '' };
+    return {
+      framesRef: this.framesRef,
+      setModalVideoEl: this.setModalVideoEl.bind(this),
+      scrollFramesLeft: function () { self.scrollFramesBy(-300); },
+      scrollFramesRight: function () { self.scrollFramesBy(300); },
+      open: open,
+      sel: sel,
+      hasSelected: !!picked,
+      hasVideo: !!(picked && picked.video),
+      videoPoster: (picked && picked.images && picked.images[0]) || '',
+      isJcm06c: this.state.selected === 'p_jcm06c',
+      modalVideoStyle: 'width:100%; max-height:420px; object-fit:' + (this.state.selected === 'p_jcm06c' ? 'contain; background:var(--bg);' : 'cover;') + ' border-radius:16px; display:block; margin-bottom:16px; border:1px solid var(--line);',
+      modalImgStyle: 'width:100%; height:260px; object-fit:' + (this.state.selected === 'p_jcm06c' ? 'contain; background:var(--bg);' : 'cover;') + ' border-radius:14px; display:block; border:1px solid var(--line);',
+      modalImgStyleAt: (function () {
+        var base = 'width:100%; height:260px; object-fit:' + (self.state.selected === 'p_jcm06c' ? 'contain; background:var(--bg);' : 'cover;') + ' border-radius:14px; border:1px solid var(--line);';
+        var count = (picked && picked.images && picked.images.length) || 0;
+        return { 0: base + (count > 0 ? ' display:block;' : ' display:none;'), 1: base + (count > 1 ? ' display:block;' : ' display:none;'), 2: base + (count > 2 ? ' display:block;' : ' display:none;') };
+      })(),
+      closeModal: self.closeModal.bind(self),
+      stopClick: function (e) { e.stopPropagation(); },
+      modalCardStyle: 'background:var(--surface); border:1px solid var(--line); border-radius:24px; padding:' + (isMobile ? '24px 20px' : '36px 40px') + '; max-width:1040px; width:100%; box-shadow:0 40px 90px rgba(0,0,0,0.45);',
+      galleryStyle: 'display:grid; grid-template-columns:' + (isMobile ? '1fr' : 'repeat(auto-fit,minmax(240px,1fr))') + '; gap:16px;',
+      themeVars: themeVars,
+      navBg: isLightTheme ? 'rgba(255,255,255,0.88)' : 'rgba(18,18,18,0.85)',
+      logoColor: isLightTheme ? '#14161A' : '#fff',
+      isLightTheme: isLightTheme,
+      isDarkTheme: !isLightTheme,
+      toggleTheme: self.toggleTheme.bind(self),
+      t: I18N[lang] || I18N.pt,
+      lang: lang,
+      langOptions: langOptions,
+      introVisible: this.state.introVisible,
+      onIntroEnd: self.onIntroEnd.bind(self),
+      produtosOpen: this.state.produtosOpen,
+      toggleProdutos: self.toggleProdutos.bind(self),
+      subPiezos: function () { self.setProdutosSub('piezos'); },
+      subPontas: function () { self.setProdutosSub('pontas'); },
+      produtosSubIsPiezos: this.state.produtosSub === 'piezos',
+      produtosSubIsPontas: this.state.produtosSub === 'pontas',
+      piezosRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'piezos' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      pontasRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'pontas' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      navLinksStyle: isMobile ? 'display:none;' : 'display:flex; gap:34px; font-size:14px; font-weight:500;',
+      isMobile: isMobile,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: self.toggleMobileMenu.bind(self),
+      cadastroCols: isMobile ? '1fr' : '1fr 1fr',
+      diagCols: isMobile ? '1fr' : '1fr 1fr',
+      diagColsRev: isMobile ? '1fr' : '1fr 1fr',
+      postureOrder: isMobile ? 'order:0;' : 'order:0;',
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      handleSubmit: self.handleSubmit.bind(self),
+      cartCount: this.state.cartCount,
+      cartHasItems: this.state.cartCount > 0
+    };
+  }
+}
+</script>
+</body>
+</html>

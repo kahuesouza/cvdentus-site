@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  .cvd-glow-btn{position:relative;z-index:0;}
+  .cvd-glow-btn::before{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-2;pointer-events:none;transition:transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);}
+  .cvd-glow-btn::after{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-3;filter:blur(18px);transform:translate3d(0,0,0) scale(0.92);}
+  .cvd-glow-btn:hover::after{filter:blur(28px);}
+  .cvd-glow-btn:hover::before{transform:rotate(-180deg);}
+  .cvd-glow-btn:active::before{scale:0.7;}
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="image-slot.js"></script>
+  <style>
+    body { margin: 0; background: #121212; }
+    a { color: #4C7FFF; text-decoration: none; }
+    a:hover { color: #7DA0FF; }
+    ::selection { background: #0047FF; color: #fff; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes curtainOut { 0% { opacity: 1; transform: translateY(0); } 55% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-6%); } }
+    @keyframes introLogo { 0% { opacity: 0; transform: scale(0.82); letter-spacing: 0.05em; } 45% { opacity: 1; transform: scale(1); letter-spacing: 0; } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes introLine { 0%, 100% { transform: scaleX(0); } 20%, 55% { transform: scaleX(1); } }
+    @keyframes tipFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(-2deg); } }
+  </style>
+</helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#121212"></rect><text x="100" y="105" font-family="sans-serif" font-size="28" font-weight="800" fill="#4C7FFF" text-anchor="middle">Elo</text></svg></template>
+
+<div style="{{ themeVars }}font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--ink); overflow-x:hidden;">
+
+  <div style="--bg:#eaf2fb; --ink:#101319; --muted:#57647a; --accent:#587eb4; --accent2:#004388; --line:rgba(0,67,136,0.14); --surface:#ffffff;"><sc-if value="{{ introVisible }}" hint-placeholder-val="{{ true }}">
+    <div sc-camel-on-animation-end="{{ onIntroEnd }}" style="position:fixed; inset:0; z-index:999; background:var(--ink); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; animation:curtainOut 2.1s cubic-bezier(.76,0,.24,1) forwards;">
+      <img loading="lazy" decoding="async" src="uploads/LOGO_LINHA_ELO_SVG-0c394247.svg" alt="Linha Elo" style="height:44px; width:auto; object-fit:contain; filter:brightness(0) invert(1); animation:introLogo 1.3s cubic-bezier(.16,1,.3,1) forwards;">
+      <div style="width:64px; height:2px; background:var(--accent2); transform-origin:center; animation:introLine 2.1s cubic-bezier(.76,0,.24,1) forwards;"></div>
+    </div>
+  </sc-if></div>
+
+  <nav style="position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px clamp(20px,5vw,64px); background:{{ navBg }}; border-bottom:1px solid var(--line); will-change:auto;">
+    <a href="./CVDentus.dc.html" style="cursor:pointer; text-decoration:none; color:{{ logoColor }}; display:flex; align-items:center;"><svg viewBox="0 0 424.75 283.35" style="height:30px; width:auto;" fill="currentColor"><path d="M397.38,40.72h-52.39L313.97,0h-40.21l17.63,23.15h9.45l21.7,28.49-86.67,112.06-6.65-8.63-13.68,17.69,20.3,26.34,104.9-135.62h55.96c2.92,0,5.28,2.36,5.28,5.28v82.47c0,2.92-2.36,5.29-5.28,5.29h-90.93v-25.19l-22.75,29.42v18.52h114.35c15.11,0,27.36-12.25,27.36-27.36v-83.81c0-15.11-12.25-27.36-27.36-27.36"></path><polygon points="120.08 48.89 209.47 164.87 209.47 129.44 149.19 51.22 170.8 23.15 209.47 23.15 209.47 0 157.72 0 120.08 48.89"></polygon><path d="M118.12,23.15h130.05l21.7,28.49-86.67,112.06L96.51,51.22l21.61-28.08ZM28.03,63.47h50.61l104.53,135.62,115.77-149.68L261.29,0H105.04l-31.34,40.72H27.36c-15.11,0-27.36,12.25-27.36,27.36v83.81c0,15.12,12.25,27.36,27.36,27.36h121.26l-17.52-22.75H28.03c-2.92,0-5.28-2.37-5.28-5.29v-82.47c0-2.92,2.36-5.28,5.28-5.28"></path><path d="M46.15,243c-7.24,0-12.36,5.6-12.36,13.9s5.12,14.09,12.36,14.09c5.31,0,9.46-2.03,12.07-6.08l10.23,6.95c-4.35,7.24-12.45,11.49-23.08,11.49-15.74,0-26.45-10.62-26.45-26.36s10.72-26.65,26.65-26.65c9.95,0,17.86,3.96,22.49,10.91l-10.04,7.24c-2.79-3.48-6.76-5.59-11.87-5.5"></path><polygon points="80.81 230.83 93.07 268.68 105.23 230.83 120.01 230.83 100.41 282.78 85.15 282.78 65.46 230.93 80.81 230.83"></polygon><path d="M156.5,257c0-8.5-5.31-14.39-12.94-14.39s-13.04,5.99-13.13,14.39c.09,8.5,5.31,14.39,13.13,14.39s12.94-5.89,12.94-14.39M171.27,211.14v71.63h-14.77v-7.63c-3.67,5.31-9.26,8.21-16.41,8.21-14.77,0-24.52-10.72-24.52-26.75s9.65-26.35,24.13-26.35c7.34,0,13.04,2.89,16.8,8.2v-27.32h14.77Z"></path><path d="M220.41,254.2c-.48-9.85-7.05-16.22-16.99-16.22s-16.7,6.37-17.76,16.22h34.75ZM227.17,260.18h-41.51c1.25,10.04,8.5,16.61,18.44,16.61,6.28,0,11.78-2.32,15.74-6.47l4.15,4.35c-4.83,5.31-11.97,8.4-20.46,8.4-14.97,0-25.3-10.52-25.3-25.68s10.42-25.58,25.19-25.68c16.41,0,24.53,11.3,23.75,28.48"></path><path d="M281.82,251.49v31.28h-7.53v-29.35c0-9.08-5.41-14.49-14.39-14.49-10.04.1-16.22,6.76-17.09,16.61v27.22h-7.53v-50.78h7.53v11.2c3.58-7.72,10.43-11.39,19.7-11.49,12.16,0,19.31,7.43,19.31,19.79"></path><path d="M320.05,279.3c-3.57,2.41-7.43,3.76-11.49,3.76-7.43.1-12.94-4.35-12.94-14.39v-29.25h-7.34v-5.89h7.34v-13.32h7.43v13.32h16.12v5.89h-16.12v28c0,6.18,2.41,8.68,6.76,8.68,2.61-.09,5.31-.96,8.11-2.61l2.13,5.8Z"></path><path d="M370.74,231.99v50.79h-7.53v-11.49c-3.38,7.91-10.13,11.69-19.31,11.78-11.88,0-19.02-7.53-19.02-19.79v-31.28h7.53v29.35c0,9.07,5.31,14.48,14.1,14.48,10.52-.19,16.7-7.91,16.7-18.93v-24.91h7.53Z"></path><path d="M397.29,237.98c-5.7,0-10.04,2.03-10.04,6.85,0,11.49,28.38,5.6,28.38,23.85,0,9.94-8.88,14.39-18.63,14.39-7.25,0-14.68-2.51-19.51-7.15l2.9-5.5c4.34,4.05,10.91,6.46,16.89,6.46s10.82-2.31,10.91-7.43c.29-12.35-28.19-6.08-28.1-24.04,0-9.65,8.4-13.8,17.67-13.8,6.08,0,11.97,1.83,16.22,4.63l-2.9,5.8c-3.96-2.51-9.07-4.06-13.8-4.06"></path></svg></a>
+    <div style="{{ navLinksStyle }}">
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.home }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.diamantes }}</a>
+      <a href="./CVDentus.dc.html?page=piezos" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.piezos }}</a>
+      <span sc-camel-on-click="{{ toggleProdutos }}" style="color:var(--ink); cursor:pointer; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.produtos }} ▾</span>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.blog }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.suporte }}</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="display:flex; align-items:center; gap:2px; border:1px solid var(--line); border-radius:8px; padding:2px;">
+        <sc-for list="{{ langOptions }}" as="lg" hint-placeholder-count="3">
+          <span onClick="{{ lg.onClick }}" style="{{ lg.style }}">{{ lg.label }}</span>
+        </sc-for>
+      </div>
+      <label style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; flex-shrink:0; cursor:pointer;">
+        <input type="checkbox" checked="{{ isLightTheme }}" onChange="{{ toggleTheme }}" style="opacity:0; width:0; height:0; position:absolute;" />
+        <sc-if value="{{ isLightTheme }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:linear-gradient(180deg,#4dc9ff,#8fdcff);">
+            <svg viewBox="0 0 16 16" style="position:absolute; bottom:2px; right:3px; width:13px; height:13px;" fill="#fff"><path transform="matrix(.77976 0 0 .78395-299.99-418.63)" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path></svg>
+            <span style="position:absolute; top:3px; left:24px; width:16px; height:16px; border-radius:50%; background:#ffd35c; box-shadow:0 0 8px 2px rgba(255,211,92,.7);"></span>
+          </span>
+        </sc-if>
+        <sc-if value="{{ isDarkTheme }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:#1a1d29;">
+            <span style="position:absolute; top:5px; left:8px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:14px; left:14px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:8px; left:19px; width:1.5px; height:1.5px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:3px; left:4px; width:16px; height:16px; border-radius:50%; background:#e8ecf5; box-shadow:inset -3px -1px 0 0 #c7ccda;"></span>
+          </span>
+        </sc-if>
+      </label>
+      <div style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg></div>
+      <div style="position:relative; cursor:pointer; color:var(--ink); display:flex; align-items:center;">
+        <svg viewBox="0 0 24 24" style="width:21px; height:21px;" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9" cy="20" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="17" cy="20" r="1.3" fill="currentColor" stroke="none"></circle></svg>
+        <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute; top:-6px; right:-8px; background:var(--accent2); color:#fff; font-size:10px; font-weight:700; min-width:16px; height:16px; border-radius:999px; display:flex; align-items:center; justify-content:center; padding:0 3px;">{{ cartCount }}</span>
+        </sc-if>
+      </div>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <div sc-camel-on-click="{{ toggleMobileMenu }}" style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:22px; height:22px;" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></div>
+      </sc-if>
+    </div>
+  </nav>
+
+  <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; top:64px; left:0; right:0; background:var(--surface); border-bottom:1px solid var(--line); box-shadow:0 24px 48px rgba(20,21,26,0.14); z-index:79; display:flex; flex-direction:column; padding:12px clamp(20px,5vw,64px);">
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.home }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.diamantes }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.piezos }}</a>
+      <span sc-camel-on-click="{{ toggleProdutos }}" style="color:var(--ink); padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500; cursor:pointer;">{{ t.produtos }} ▾</span>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line); font-weight:500;">{{ t.blog }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:14px 4px; font-weight:500;">{{ t.suporte }}</a>
+    </div>
+  </sc-if>
+
+<sc-if value="{{ produtosOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; top:64px; left:0; right:0; background:#14151a; z-index:80; display:grid; grid-template-columns:repeat(5,minmax(160px,1fr)); grid-auto-rows:auto; gap:24px 32px; padding:32px clamp(20px,5vw,64px) 36px; max-height:70vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,0.35);">
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Piezos</div>
+          <a href="./Optymus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">OPTYMUS</a>
+          <a href="./Clinical-Plus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Clinical Plus</a>
+          <a href="./DentSurg-Pro-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">DentSurg Pro</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Pontas</div>
+          <a href="./CVDentus.dc.html?cat=clinicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Clínicas</a>
+          <a href="./CVDentus.dc.html?cat=cirurgicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Cirúrgicas</a>
+          <a href="./Elo-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Compatíveis</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Brocas</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Brocas de Alta Rotação</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Lupas</div>
+          <a href="./Lupas-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Lupas Odontológicas</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Acessórios</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Acessórios</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Kits</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Kits</a>
+      </div>
+  </div>
+</sc-if>
+
+  <div style="--bg:#eaf2fb; --ink:#101319; --muted:#57647a; --accent:#587eb4; --accent2:#004388; --line:rgba(0,67,136,0.14); --surface:#ffffff;"><!-- HERO -->
+  <section style="position:relative; padding:170px clamp(20px,5vw,64px) 0; text-align:center; overflow:hidden; background:linear-gradient(180deg, #14151a 0%, #1a1d29 100%);">
+    <div style="position:absolute; top:-10%; left:50%; transform:translateX(-50%); width:1100px; height:640px; background:radial-gradient(45% 55% at 30% 30%, rgba(124,92,255,0.4), transparent 60%), radial-gradient(50% 60% at 75% 40%, rgba(47,125,253,0.4), transparent 65%); filter:blur(40px); z-index:0;"></div>
+    <div style="position:relative; z-index:1; max-width:760px; margin:0 auto;">
+      <img loading="lazy" decoding="async" src="uploads/LOGO_LINHA_ELO_SVG.svg" alt="Linha Elo" style="height:32px; width:auto; margin-bottom:20px; filter:brightness(0) invert(1);">
+      <h1 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(34px,5.2vw,58px); line-height:1.1; letter-spacing:-0.01em; margin:0 0 16px; color:#fff;">Pontas de Ultrassom de Alta Performance</h1>
+      <div style="display:inline-flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; background:rgba(94,234,212,0.12); border:1px solid rgba(94,234,212,0.4); border-radius:100px; padding:8px 16px; margin:0 auto 28px; max-width:90vw;">
+        <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:12.5px; color:#5EEAD4; white-space:nowrap;">30 dias de garantia</span>
+        <span style="width:3px; height:3px; border-radius:50%; background:rgba(255,255,255,0.4); flex-shrink:0;"></span>
+        <span style="font-family:'Montserrat',sans-serif; font-size:12px; color:rgba(255,255,255,0.75);">Compatibilidade e performance garantidas ou seu dinheiro de volta</span>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; max-width:660px; margin:0 auto 8px;">
+        <div style="flex:1 1 130px; max-width:155px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:14px; padding:16px 14px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Alta Compatibilidade</div>
+          <div style="color:rgba(255,255,255,0.72); font-size:12px; line-height:1.5;">Funciona na maioria dos ultrassons piezoelétricos do mercado.</div>
+        </div>
+        <div style="flex:1 1 130px; max-width:155px; background:rgba(255,255,255,0.08); border:1px solid #5EEAD4; border-radius:14px; padding:16px 14px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; color:#5EEAD4; margin-bottom:6px;">Tecnologia CVD</div>
+          <div style="color:rgba(255,255,255,0.85); font-size:12px; line-height:1.5;">Diamante CVD com durabilidade até <strong>30x maior</strong>.</div>
+        </div>
+        <div style="flex:1 1 130px; max-width:155px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:14px; padding:16px 14px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Desgaste Controlado</div>
+          <div style="color:rgba(255,255,255,0.72); font-size:12px; line-height:1.5;">Performance previsível do início ao fim do uso.</div>
+        </div>
+        <div style="flex:1 1 130px; max-width:155px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:14px; padding:16px 14px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Ergonomia e Design</div>
+          <div style="color:rgba(255,255,255,0.72); font-size:12px; line-height:1.5;">Formato otimizado para melhor acesso e visibilidade.</div>
+        </div>
+      </div>
+    </div>
+    <div id="cadastro" style="{{ heroCadastroGridStyle }}">
+      <img loading="lazy" decoding="async" src="uploads/SITE_T1UX.png" alt="Pontas T1UX/D da Linha Elo" style="{{ heroShotStyle }}">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(255,255,255,0.97); border-radius:20px; padding:48px 36px; text-align:center; box-shadow:0 30px 70px rgba(20,21,26,0.25);">
+          <div style="width:52px; height:52px; border-radius:50%; background:var(--accent); margin:0 auto 18px;"></div>
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:21px; margin:0 0 8px;">Recebemos seu cadastro.</h3>
+          <p style="color:var(--muted); font-size:14px; margin:0;">Nossa equipe entrará em contato em até 1 dia útil.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form sc-camel-on-submit="{{ handleSubmit }}" style="background:var(--surface); border-radius:16px; padding:24px 22px; display:grid; grid-template-columns:1fr; gap:10px; box-shadow:0 30px 70px rgba(20,21,26,0.25); border:1px solid var(--line);">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:16px; margin-bottom:1px; color:var(--ink);">Fale com um Consultor</div>
+          <input required="" type="text" name="nome" placeholder="Nome" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="email" name="email" placeholder="E-mail" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="tel" name="telefone" placeholder="WhatsApp" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; color:var(--ink); cursor:pointer;">
+              <input required="" type="checkbox" name="consentimento" style="margin-top:2px; accent-color:var(--accent); flex-shrink:0;">
+              <span>Eu concordo em receber comunicações.</span>
+            </label>
+            <p style="margin:0; font-size:11.5px; line-height:1.5; color:var(--muted);">Ao enviar, você concorda em receber contato da CVDentus sobre a Linha Elo. Consulte nossa <a href="#" style="color:var(--accent);">Política de Privacidade</a>.</p>
+          </div>
+          <button type="submit" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; margin-top:2px; display:block; width:100%;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:13px; color:#fff; background:#14151a; padding:12px; border-radius:999px;">Saiba mais</span></button>
+          <p style="margin:0; font-size:10.5px; line-height:1.4; color:var(--muted); text-align:center;">Um consultor da CVDentus entra em contato pelo WhatsApp em até 1 dia útil.</p>
+        </form>
+      </sc-if>
+    </div>
+  </section></div>
+
+  <!-- ECOMMERCE -->
+  <section style="padding:100px clamp(20px,5vw,64px); background:var(--bg);">
+    <div style="max-width:1360px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 44px; text-align:center;">Adquira as Pontas da Linha Elo</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px;">
+        <div style="border:1px solid var(--line); border-radius:20px; padding:32px 28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <img loading="lazy" decoding="async" src="uploads/T1T_SEM_FUNDO-12c28acf.png" alt="Ponta T1T" style="width:100%; max-width:160px; height:160px; object-fit:contain;">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--ink); margin:0;">Ponta T1T</h3>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">Ideal para profilaxia, raspagem e manutenções periódicas — ótimo custo-benefício.</p>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:22px; color:var(--ink); margin-top:4px;">R$ 210,00</div>
+          <div style="flex:1;"></div>
+          <sc-raw-select sc-camel-default-value="" onChange="{{ setT1tEncaixe }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+            <option value="" disabled="">Escolha o encaixe</option>
+            <option value="D">Encaixe D</option>
+            <option value="E">Encaixe E</option>
+            <option value="N">Encaixe N</option>
+          </sc-raw-select>
+          <sc-if value="{{ t1tError }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#e5484d; font-size:12.5px;">Selecione o encaixe antes de adicionar.</div>
+          </sc-if>
+          <button sc-camel-on-click="{{ addToCartT1T }}" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; width:100%; margin-top:8px;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Adicionar ao Carrinho</span></button>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; padding:32px 28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <img loading="lazy" decoding="async" src="uploads/T1UX_SEM_FUNDO-2aa35d65.png" alt="Ponta T1UX" style="width:100%; max-width:160px; height:160px; object-fit:contain;">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--ink); margin:0;">Ponta T1UX (Diamante CVD)</h3>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">Indicada para remoção de manchas e biofilme, com máximo conforto e durabilidade.</p>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:22px; color:var(--ink); margin-top:4px;">R$ 380,00</div>
+          <div style="flex:1;"></div>
+          <sc-raw-select sc-camel-default-value="" onChange="{{ setT1uxEncaixe }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+            <option value="" disabled="">Escolha o encaixe</option>
+            <option value="D">Encaixe D</option>
+            <option value="E">Encaixe E</option>
+            <option value="N">Encaixe N</option>
+          </sc-raw-select>
+          <sc-if value="{{ t1uxError }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#e5484d; font-size:12.5px;">Selecione o encaixe antes de adicionar.</div>
+          </sc-if>
+          <button sc-camel-on-click="{{ addToCartT1UX }}" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; width:100%; margin-top:auto;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Adicionar ao Carrinho</span></button>
+        </div>
+        <div style="border:2px solid var(--accent2); border-radius:20px; padding:32px 28px; background:var(--surface); display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
+          <div style="display:flex; gap:4px; align-items:center; justify-content:center;">
+            <img loading="lazy" decoding="async" src="uploads/T1T_SEM_FUNDO-12c28acf.png" alt="Ponta T1T" style="width:100%; max-width:90px; height:130px; object-fit:contain;">
+            <img loading="lazy" decoding="async" src="uploads/T1UX_SEM_FUNDO-2aa35d65.png" alt="Ponta T1UX" style="width:100%; max-width:90px; height:130px; object-fit:contain;">
+          </div>
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--ink); margin:0;">Kit T1T + T1UX</h3>
+          <p style="color:var(--muted); font-size:14px; line-height:1.6; margin:0;">As duas pontas da Linha Elo, com condições especiais na compra conjunta.</p>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:22px; color:var(--ink); margin-top:4px;">R$ 560,00</div>
+          <div style="flex:1;"></div>
+          <sc-raw-select sc-camel-default-value="" onChange="{{ setKitEncaixe }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+            <option value="" disabled="">Escolha o encaixe</option>
+            <option value="D">Encaixe D</option>
+            <option value="E">Encaixe E</option>
+            <option value="N">Encaixe N</option>
+          </sc-raw-select>
+          <sc-if value="{{ kitError }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#e5484d; font-size:12.5px;">Selecione o encaixe antes de adicionar.</div>
+          </sc-if>
+          <button sc-camel-on-click="{{ addToCartKit }}" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; width:100%; margin-top:auto;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:14px; border-radius:999px;">Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUTOS T1T/T1UX -->
+  <section style="padding:120px clamp(20px,5vw,64px) 40px; background:var(--bg);">
+    <div style="max-width:1360px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 44px; text-align:center;">Conheça as Pontas da Linha Elo</h2>
+      <div style="{{ pontasGridStyle }}">
+        <div data-reveal="1" style="opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1); {{ pontaCardStyle }}">
+          <img loading="lazy" decoding="async" src="uploads/T1T_SEM_FUNDO-12c28acf.png" alt="Ponta T1T" style="{{ pontaImgStyle }} animation:tipFloat 4.5s ease-in-out infinite;">
+          <div style="background:var(--accent2); border-radius:28px; padding:36px 36px 32px; color:#fff;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:22px; margin:0 0 24px;">Ponta T1T</h3>
+            <div style="display:flex; flex-direction:column; gap:22px;">
+              <div>
+                <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; color:#7DD8D0; margin-bottom:12px;">Ideal para</div>
+                <ul style="margin:0; padding:0 0 0 18px; font-size:15px; line-height:1.75;">
+                  <li>Profilaxia e raspagem supragengival</li>
+                  <li>Limpeza de placas e tártaro visível</li>
+                  <li>Manutenções periódicas e consultas de rotina</li>
+                  <li>Clínicas que buscam desempenho com investimento acessível</li>
+                </ul>
+              </div>
+              <div>
+                <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; color:#7DD8D0; margin-bottom:12px;">Diferenciais</div>
+                <ul style="margin:0; padding:0 0 0 18px; font-size:15px; line-height:1.75;">
+                  <li>Procedimentos mais suaves, com menor risco de desgaste do esmalte</li>
+                  <li>Fácil esterilização e manutenção, preservando a integridade do instrumento</li>
+                  <li>Excelente custo-benefício, ideal também para recém-formados</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-reveal="1" style="opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1); {{ pontaCardStyle }}">
+          <img loading="lazy" decoding="async" src="uploads/T1UX_SEM_FUNDO-2aa35d65.png" alt="Ponta T1UX" style="{{ pontaImgStyle }} animation:tipFloat 4.5s ease-in-out infinite 0.4s;">
+          <div style="background:var(--accent2); border-radius:28px; padding:36px 36px 32px; color:#fff;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:22px; margin:0 0 24px;">Ponta T1UX (Diamante CVD)</h3>
+            <div style="display:flex; flex-direction:column; gap:22px;">
+              <div>
+                <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; color:#7DD8D0; margin-bottom:12px;">Indicada para</div>
+                <ul style="margin:0; padding:0 0 0 18px; font-size:15px; line-height:1.75;">
+                  <li>Remoção de manchas, pigmentações e biofilme resistente</li>
+                  <li>Limpeza de próteses, superfícies peri-implantares e regiões de difícil acesso</li>
+                  <li>Profissionais que valorizam resultado estético e conforto do paciente</li>
+                </ul>
+              </div>
+              <div>
+                <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; color:#7DD8D0; margin-bottom:12px;">Diferenciais</div>
+                <ul style="margin:0; padding:0 0 0 18px; font-size:15px; line-height:1.75;">
+                  <li>Exclusivo Diamante CVD com durabilidade superior e menor necessidade de reposição</li>
+                  <li>Redução significativa da sensibilidade durante o procedimento</li>
+                  <li>Sensação suave e precisa, sem vibrações ou "choquinhos"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:56px;">
+        <a href="#cadastro" class="cvd-glow-btn" style="display:inline-block; padding:3px; border-radius:999px; text-decoration:none;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:15px 32px; border-radius:999px;">Saiba mais sobre Pontas Elo</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- O QUE E / COMPATIBILIDADE -->
+  <section style="position:relative; padding:60px clamp(20px,5vw,64px) 90px; background:var(--bg);">
+    <img loading="lazy" decoding="async" src="uploads/LOGO_LINHA_ELO_SVG-0c394247.svg" alt="" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:auto; height:70%; max-height:280px; max-width:90%; object-fit:contain; opacity:0.08; filter:brightness(0) invert(1); z-index:0; pointer-events:none;">
+    <div data-reveal="1" style="position:relative; z-index:1; opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1); max-width:1200px; margin:0 auto; text-align:center;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 44px; color:var(--ink);">Compatível com os Principais Ultrassons</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px;">
+        <div style="border:1px solid var(--line); border-radius:20px; padding:30px 28px; background:var(--surface);">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--accent2); margin:0 0 18px; text-align:center;">ROSCA TIPO "N"</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <sc-for list="{{ roscaN }}" as="brand" hint-placeholder-count="18">
+              <span style="display:inline-flex; padding:7px 13px; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif; font-weight:600;">{{ brand }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; padding:30px 28px; background:var(--surface);">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--accent2); margin:0 0 18px; text-align:center;">ROSCA TIPO "E"</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <sc-for list="{{ roscaE }}" as="brand" hint-placeholder-count="13">
+              <span style="display:inline-flex; padding:7px 13px; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif; font-weight:600;">{{ brand }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:20px; padding:30px 28px; background:var(--surface);">
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:var(--accent2); margin:0 0 18px; text-align:center;">ROSCA TIPO "D"</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <sc-for list="{{ roscaD }}" as="brand" hint-placeholder-count="6">
+              <span style="display:inline-flex; padding:7px 13px; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--ink); font-size:13px; font-family:'Montserrat',sans-serif; font-weight:600;">{{ brand }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:48px;">
+        <a href="#cadastro" class="cvd-glow-btn" style="display:inline-block; padding:3px; border-radius:999px; text-decoration:none;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:15px 32px; border-radius:999px;">Falar com Especialista para Indicação de Modelos</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section style="position:relative; padding:100px clamp(20px,5vw,64px); background:var(--surface); overflow:hidden;">
+    <img loading="lazy" decoding="async" src="uploads/T1UX_HORINZONTAL_SEM_FUNDO-3e0bea03.png" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none;">
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, var(--surface) 0%, rgba(19,58,145,0.85) 45%, var(--surface) 100%); z-index:0;"></div>
+    <div style="position:relative; z-index:1; max-width:1280px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(26px,3.2vw,36px); line-height:1.15; margin:0 0 44px; text-align:center;">Benefícios Clínicos</h2>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+        <div style="border:1px solid var(--line); border-radius:16px; padding:28px 26px; background:var(--bg); flex:1 1 240px; max-width:320px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:13px; color:var(--accent); letter-spacing:0.04em; margin-bottom:14px;">01</div>
+          <p style="color:var(--ink); font-size:15px; line-height:1.6; margin:0;">Maior durabilidade, reduzindo a frequência de trocas.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:28px 26px; background:var(--bg); flex:1 1 240px; max-width:320px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:13px; color:var(--accent); letter-spacing:0.04em; margin-bottom:14px;">02</div>
+          <p style="color:var(--ink); font-size:15px; line-height:1.6; margin:0;">Menor ruído e vibração transmitida.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:28px 26px; background:var(--bg); flex:1 1 240px; max-width:320px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:13px; color:var(--accent); letter-spacing:0.04em; margin-bottom:14px;">03</div>
+          <p style="color:var(--ink); font-size:15px; line-height:1.6; margin:0;">Preservação de tecidos moles.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:28px 26px; background:var(--bg); flex:1 1 240px; max-width:320px;">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:13px; color:var(--accent); letter-spacing:0.04em; margin-bottom:14px;">04</div>
+          <p style="color:var(--ink); font-size:15px; line-height:1.6; margin:0;">Excelente relação custo-benefício para alto volume de procedimentos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- GARANTIA -->
+  <section style="position:relative; padding:110px clamp(20px,5vw,64px); overflow:hidden; text-align:center; background:linear-gradient(135deg, #04255c 0%, #0d5aa8 55%, #1476c4 100%);">
+    <div style="position:absolute; top:-20%; left:50%; transform:translateX(-50%); width:900px; height:900px; background:radial-gradient(circle, rgba(94,234,212,0.25), transparent 65%); z-index:0;"></div>
+    <div style="position:relative; z-index:1; max-width:780px; margin:0 auto;">
+      <div style="display:inline-flex; align-items:center; gap:14px; background:rgba(255,255,255,0.1); border:1.5px solid rgba(94,234,212,0.5); border-radius:999px; padding:10px 24px 10px 14px; margin-bottom:28px;">
+        <span style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:32px; color:#5EEAD4; line-height:1;">30</span>
+        <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:13px; color:#fff; text-transform:uppercase; letter-spacing:0.06em; text-align:left;">Dias de<br>Garantia</span>
+      </div>
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,4.2vw,48px); line-height:1.12; color:#fff; margin:0 0 22px;">Compatibilidade e performance garantidas. Ou seu dinheiro de volta.</h2>
+      <p style="color:rgba(255,255,255,0.88); font-size:17px; line-height:1.65; margin:0 0 40px;">Garantimos que as pontas da Linha Elo encaixam e performam no seu ultrassom. Se isso não acontecer em até 30 dias, devolvemos 100% do seu investimento — sem burocracia.</p>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:44px;">
+        <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); border-radius:999px; padding:10px 18px;">
+          <span style="color:#5EEAD4; font-size:16px;">✓</span>
+          <span style="color:#fff; font-size:14px; font-family:'Montserrat',sans-serif; font-weight:600;">Encaixe garantido no seu equipamento</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); border-radius:999px; padding:10px 18px;">
+          <span style="color:#5EEAD4; font-size:16px;">✓</span>
+          <span style="color:#fff; font-size:14px; font-family:'Montserrat',sans-serif; font-weight:600;">Performance comprovada ou reembolso total</span>
+        </div>
+      </div>
+      <a href="#cadastro" class="cvd-glow-btn" style="display:inline-block; padding:4px; border-radius:999px; text-decoration:none;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:700; font-size:16px; color:#04255c; background:#5EEAD4; padding:18px 40px; border-radius:999px;">Comprar com Garantia de 90 Dias</span></a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:48px clamp(20px,5vw,64px); background:var(--surface); border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <img loading="lazy" decoding="async" src="uploads/cvdentus-logo.svg" alt="CVDentus" style="height:24px; width:auto;">
+    <div style="color:var(--muted); font-size:13px;">© 2026 CVDentus. Todos os direitos reservados.</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = { produtosOpen: false, produtosSub: 'pontas', submitted: false, isMobile: (typeof window !== 'undefined' && window.innerWidth < 780), introVisible: true, theme: 'dark', lang: 'pt', mobileMenuOpen: false, cartCount: 0, kitEncaixe: '', kitError: false, t1tEncaixe: '', t1tError: false, t1uxEncaixe: '', t1uxError: false };
+
+  setT1tEncaixe(e) { this.setState({ t1tEncaixe: e.target.value, t1tError: false }); }
+
+  setT1uxEncaixe(e) { this.setState({ t1uxEncaixe: e.target.value, t1uxError: false }); }
+
+  addToCartT1T() {
+    if (!this.state.t1tEncaixe) { this.setState({ t1tError: true }); return; }
+    this.setState(function (s) { return { cartCount: s.cartCount + 1 }; });
+  }
+
+  addToCartT1UX() {
+    if (!this.state.t1uxEncaixe) { this.setState({ t1uxError: true }); return; }
+    this.setState(function (s) { return { cartCount: s.cartCount + 1 }; });
+  }
+
+  setKitEncaixe(e) { this.setState({ kitEncaixe: e.target.value, kitError: false }); }
+
+  addToCartKit() {
+    if (!this.state.kitEncaixe) { this.setState({ kitError: true }); return; }
+    this.setState(function (s) { return { cartCount: s.cartCount + 1 }; });
+  }
+
+  toggleMobileMenu() { this.setState(function (s) { return { mobileMenuOpen: !s.mobileMenuOpen }; }); }
+
+  toggleTheme() { var next = this.state.theme === 'light' ? 'dark' : 'light'; this.setState({ theme: next }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_theme', next); }
+
+  setLang(l) { this.setState({ lang: l }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_lang', l); }
+
+  toggleProdutos() { this.setState(function (s) { return { produtosOpen: !s.produtosOpen, produtosSub: 'pontas' }; }); }
+
+  setProdutosSub(sub) { this.setState({ produtosSub: sub }); }
+
+  onIntroEnd() { this.setState({ introVisible: false }); }
+
+  handleResize() {
+    var m = window.innerWidth < 780;
+    if (m !== this.state.isMobile) this.setState({ isMobile: m });
+  }
+
+  componentDidMount() {
+    if (typeof localStorage !== 'undefined') {
+      var st = localStorage.getItem('cvd_theme');
+      var sl = localStorage.getItem('cvd_lang');
+      if (st || sl) this.setState({ theme: st || this.state.theme, lang: sl || this.state.lang });
+    }
+    this.resizeHandler = this.handleResize.bind(this);
+    window.addEventListener('resize', this.resizeHandler);
+    document.querySelectorAll('video[autoplay]').forEach(function (v) {
+      v.muted = true; v.loop = true; v.playsInline = true;
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    });
+    var els = document.querySelectorAll('[data-reveal]');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    els.forEach(function (el) { observer.observe(el); });
+    this.revealObserver = observer;
+  }
+
+  componentWillUnmount() {
+    if (this.revealObserver) this.revealObserver.disconnect();
+    if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({ submitted: true });
+  }
+
+  renderVals() {
+    var self = this;
+    var theme = this.state.theme || 'dark';
+    var isLightTheme = theme === 'light';
+    var isDarkTheme = !isLightTheme;
+    var themeVars = isLightTheme
+      ? '--bg:#FFFFFF; --ink:#14161A; --muted:#6B7280; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(0,0,0,0.10); --surface:#F3F5F8;'
+      : '--bg:#121212; --ink:#F1F5F9; --muted:#9AA1AC; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(255,255,255,0.12); --surface:#1A1D24;';
+    var navBg = isLightTheme ? '#FFFFFF' : '#121212';
+    var logoColor = isLightTheme ? '#14161A' : '#fff';
+    var lang = this.state.lang || 'pt';
+    var I18N = {
+      pt: { home: 'Home', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Suporte', produtos: 'Produtos' },
+      es: { home: 'Inicio', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Soporte', produtos: 'Productos' },
+      en: { home: 'Home', diamantes: 'Diamonds', piezos: 'Piezos', blog: 'Blog', suporte: 'Support', produtos: 'Products' }
+    };
+    var t = I18N[lang] || I18N.pt;
+    var langOptions = ['pt','es','en'].map(function (l) {
+      var active = lang === l;
+      return { key: l, label: l.toUpperCase(), onClick: function () { self.setLang(l); }, style: "cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:5px 9px;border-radius:6px;" + (active ? 'background:var(--accent2);color:#fff' : 'color:var(--muted)') };
+    });
+    var isMobile = this.state.isMobile;
+    var navLinksStyle = isMobile ? 'display:none;' : 'display:flex; gap:34px; font-size:14px; font-weight:500;';
+    var mobileMenuOpen = this.state.mobileMenuOpen;
+    var heroCadastroGridStyle = 'position:relative; z-index:1; max-width:760px; margin:36px auto 0; padding-bottom:' + (isMobile ? '48px' : '72px') + '; display:grid; grid-template-columns:' + (isMobile ? '1fr' : '0.8fr 1fr') + '; gap:' + (isMobile ? '24px' : '0px') + '; align-items:center; text-align:left; overflow:visible;';
+    var ctaFormGridStyle = 'background:rgba(255,255,255,0.97); border-radius:20px; padding:36px 32px; display:grid; grid-template-columns:' + (isMobile ? '1fr' : '1fr 1fr') + '; gap:14px; box-shadow:0 30px 70px rgba(0,0,0,0.3); text-align:left;';
+    var pontasGridStyle = 'display:grid; grid-template-columns:' + (isMobile ? '1fr' : 'repeat(auto-fit,minmax(480px,1fr))') + '; gap:' + (isMobile ? '60px' : '80px 50px') + ';';
+    var pontaCardStyle = isMobile ? 'position:relative; padding-top:180px;' : 'position:relative; padding-left:150px;';
+    var pontaImgStyle = isMobile ? 'position:absolute; top:0; left:50%; transform:translateX(-50%); width:auto; height:180px; object-fit:contain; z-index:1; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.25));' : 'position:absolute; left:0; bottom:0; height:100%; width:auto; max-width:280px; object-fit:contain; z-index:1; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.25));';
+    var specialtyRowStyle = 'display:grid; grid-template-columns:' + (isMobile ? '1fr' : '200px 1fr') + '; gap:' + (isMobile ? '4px' : '20px') + '; padding:22px 4px; border-bottom:1px solid var(--line); align-items:baseline;';
+    var specialtyNameStyle = "font-family:'Montserrat',sans-serif; font-weight:700; font-size:16px; color:var(--ink); white-space:pre-line; text-align:" + (isMobile ? 'left' : 'right') + ';';
+    var heroShotStyle = 'width:100%; max-width:230px; height:auto; display:block; margin:0 auto; animation:tipFloat 4.5s ease-in-out infinite; filter:drop-shadow(0 30px 40px rgba(0,0,0,0.35));' + (isMobile ? '' : ' transform:translateX(60%);');
+    return {
+      themeVars: themeVars, navBg: navBg, logoColor: logoColor, isLightTheme: isLightTheme, isDarkTheme: isDarkTheme, toggleTheme: self.toggleTheme.bind(self), t: t, lang: lang, langOptions: langOptions,
+      introVisible: this.state.introVisible,
+      produtosOpen: this.state.produtosOpen,
+      toggleProdutos: self.toggleProdutos.bind(self),
+      subPiezos: function () { self.setProdutosSub('piezos'); },
+      subPontas: function () { self.setProdutosSub('pontas'); },
+      produtosSubIsPiezos: this.state.produtosSub === 'piezos',
+      produtosSubIsPontas: this.state.produtosSub === 'pontas',
+      piezosRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'piezos' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      pontasRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'pontas' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      onIntroEnd: self.onIntroEnd.bind(self),
+      navLinksStyle: navLinksStyle,
+      heroCadastroGridStyle: heroCadastroGridStyle,
+      ctaFormGridStyle: ctaFormGridStyle,
+      pontasGridStyle: pontasGridStyle,
+      pontaCardStyle: pontaCardStyle,
+      pontaImgStyle: pontaImgStyle,
+      specialtyRowStyle: specialtyRowStyle,
+      specialtyNameStyle: specialtyNameStyle,
+      heroShotStyle: heroShotStyle,
+      isMobile: isMobile,
+      mobileMenuOpen: mobileMenuOpen,
+      toggleMobileMenu: self.toggleMobileMenu.bind(self),
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      handleSubmit: self.handleSubmit.bind(self),
+      cartCount: this.state.cartCount,
+      cartHasItems: this.state.cartCount > 0,
+      addToCartT1T: self.addToCartT1T.bind(self),
+      addToCartT1UX: self.addToCartT1UX.bind(self),
+      addToCartKit: self.addToCartKit.bind(self),
+      setKitEncaixe: self.setKitEncaixe.bind(self),
+      kitError: this.state.kitError,
+      setT1tEncaixe: self.setT1tEncaixe.bind(self),
+      t1tError: this.state.t1tError,
+      setT1uxEncaixe: self.setT1uxEncaixe.bind(self),
+      t1uxError: this.state.t1uxError,
+      roscaN: ['Actenon', 'Adiel', 'Advanced', 'DMC', 'DTE', 'Easy Sonic', 'GG Dent', 'Gnatus', 'J Morita', 'NSK', 'Olsen', 'Ortus', 'Shuster', 'Spartan', 'Ultradent', 'VDW', 'VT150', 'SAEVO'],
+      roscaE: ['ALT', 'Driller', 'Emissonic', 'EMS', 'Gnatus', 'Kavo (Kavo Sonico não encaixa)', 'Kondortec', 'Mectron', 'Microdont', 'Ortus', 'Scaler Jet', 'W&H', 'Woodpecker'],
+      roscaD: ['Cav Flex', 'D700', 'Dabi', 'Gnatus', 'Prof', 'SAEVO'],
+      specialties: [
+        { name: 'Endodontia', desc: 'Acesso, irrigação, refinamento, remoção de materiais.' },
+        { name: 'Periodontia', desc: 'Raspagens supra e subgengival, peeling gengival.' },
+        { name: 'Dentística\ne Prótese', desc: 'Preparos cavitários, acabamentos, polimentos, biselamento.' },
+        { name: 'Cirurgia', desc: 'Osteotomias, coleta de osso, procedimentos minimamente invasivos.' },
+        { name: 'Profilaxia', desc: 'Remoção de biofilme e cálculo.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

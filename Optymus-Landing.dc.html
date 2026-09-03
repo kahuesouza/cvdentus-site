@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  .cvd-glow-btn{position:relative;z-index:0;}
+  .cvd-glow-btn::before{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-2;pointer-events:none;transition:transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);}
+  .cvd-glow-btn::after{content:'';position:absolute;inset:-3px;border-radius:inherit;background:linear-gradient(-45deg,#8fd9ff 0%,#0047ff 100%);z-index:-3;filter:blur(18px);transform:translate3d(0,0,0) scale(0.92);}
+  .cvd-glow-btn:hover::after{filter:blur(28px);}
+  .cvd-glow-btn:hover::before{transform:rotate(-180deg);}
+  .cvd-glow-btn:active::before{scale:0.7;}
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  
+  <script src="image-slot.js"></script>
+  <style>
+    body { margin: 0; background: #121212; }
+    a { color: #4C7FFF; text-decoration: none; }
+    a:hover { color: #7DA0FF; }
+    ::selection { background: #0047FF; color: #fff; }
+    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes curtainOut { 0% { opacity: 1; transform: translateY(0); } 55% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-6%); } }
+    @keyframes introLogo { 0% { opacity: 0; transform: scale(0.82); letter-spacing: 0.05em; } 45% { opacity: 1; transform: scale(1); letter-spacing: 0; } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes introLine { 0%, 100% { transform: scaleX(0); } 20%, 55% { transform: scaleX(1); } }
+  </style>
+</helmet>
+
+<div style="{{ themeVars }}font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--ink); overflow-x:hidden;">
+
+  <div style="--bg:#eaf2fb; --ink:#101319; --muted:#57647a; --accent:#587eb4; --accent2:#004388; --line:rgba(0,67,136,0.14); --surface:#ffffff; color:var(--ink);"><sc-if value="{{ introVisible }}" hint-placeholder-val="{{ true }}">
+    <div onAnimationEnd="{{ onIntroEnd }}" style="position:fixed; inset:0; z-index:999; background:var(--ink); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; animation:curtainOut 2.1s cubic-bezier(.76,0,.24,1) forwards;">
+      <img loading="lazy" decoding="async" src="uploads/cvdentus-logo.svg" alt="Optymus" style="height:32px; width:auto; object-fit:contain; animation:introLogo 1.3s cubic-bezier(.16,1,.3,1) forwards; filter:brightness(0) invert(1);">
+      <div style="width:64px; height:2px; background:var(--accent2); transform-origin:center; animation:introLine 2.1s cubic-bezier(.76,0,.24,1) forwards;"></div>
+    </div>
+  </sc-if></div>
+
+  <nav style="position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px clamp(20px,5vw,64px); background:{{ navBg }}; border-bottom:1px solid var(--line); will-change:auto;">
+    <a href="./CVDentus.dc.html" style="cursor:pointer; text-decoration:none; color:{{ logoColor }}; display:flex; align-items:center;"><svg viewBox="0 0 424.75 283.35" style="height:30px; width:auto;" fill="currentColor"><path d="M397.38,40.72h-52.39L313.97,0h-40.21l17.63,23.15h9.45l21.7,28.49-86.67,112.06-6.65-8.63-13.68,17.69,20.3,26.34,104.9-135.62h55.96c2.92,0,5.28,2.36,5.28,5.28v82.47c0,2.92-2.36,5.29-5.28,5.29h-90.93v-25.19l-22.75,29.42v18.52h114.35c15.11,0,27.36-12.25,27.36-27.36v-83.81c0-15.11-12.25-27.36-27.36-27.36"></path><polygon points="120.08 48.89 209.47 164.87 209.47 129.44 149.19 51.22 170.8 23.15 209.47 23.15 209.47 0 157.72 0 120.08 48.89"></polygon><path d="M118.12,23.15h130.05l21.7,28.49-86.67,112.06L96.51,51.22l21.61-28.08ZM28.03,63.47h50.61l104.53,135.62,115.77-149.68L261.29,0H105.04l-31.34,40.72H27.36c-15.11,0-27.36,12.25-27.36,27.36v83.81c0,15.12,12.25,27.36,27.36,27.36h121.26l-17.52-22.75H28.03c-2.92,0-5.28-2.37-5.28-5.29v-82.47c0-2.92,2.36-5.28,5.28-5.28"></path><path d="M46.15,243c-7.24,0-12.36,5.6-12.36,13.9s5.12,14.09,12.36,14.09c5.31,0,9.46-2.03,12.07-6.08l10.23,6.95c-4.35,7.24-12.45,11.49-23.08,11.49-15.74,0-26.45-10.62-26.45-26.36s10.72-26.65,26.65-26.65c9.95,0,17.86,3.96,22.49,10.91l-10.04,7.24c-2.79-3.48-6.76-5.59-11.87-5.5"></path><polygon points="80.81 230.83 93.07 268.68 105.23 230.83 120.01 230.83 100.41 282.78 85.15 282.78 65.46 230.93 80.81 230.83"></polygon><path d="M156.5,257c0-8.5-5.31-14.39-12.94-14.39s-13.04,5.99-13.13,14.39c.09,8.5,5.31,14.39,13.13,14.39s12.94-5.89,12.94-14.39M171.27,211.14v71.63h-14.77v-7.63c-3.67,5.31-9.26,8.21-16.41,8.21-14.77,0-24.52-10.72-24.52-26.75s9.65-26.35,24.13-26.35c7.34,0,13.04,2.89,16.8,8.2v-27.32h14.77Z"></path><path d="M220.41,254.2c-.48-9.85-7.05-16.22-16.99-16.22s-16.7,6.37-17.76,16.22h34.75ZM227.17,260.18h-41.51c1.25,10.04,8.5,16.61,18.44,16.61,6.28,0,11.78-2.32,15.74-6.47l4.15,4.35c-4.83,5.31-11.97,8.4-20.46,8.4-14.97,0-25.3-10.52-25.3-25.68s10.42-25.58,25.19-25.68c16.41,0,24.53,11.3,23.75,28.48"></path><path d="M281.82,251.49v31.28h-7.53v-29.35c0-9.08-5.41-14.49-14.39-14.49-10.04.1-16.22,6.76-17.09,16.61v27.22h-7.53v-50.78h7.53v11.2c3.58-7.72,10.43-11.39,19.7-11.49,12.16,0,19.31,7.43,19.31,19.79"></path><path d="M320.05,279.3c-3.57,2.41-7.43,3.76-11.49,3.76-7.43.1-12.94-4.35-12.94-14.39v-29.25h-7.34v-5.89h7.34v-13.32h7.43v13.32h16.12v5.89h-16.12v28c0,6.18,2.41,8.68,6.76,8.68,2.61-.09,5.31-.96,8.11-2.61l2.13,5.8Z"></path><path d="M370.74,231.99v50.79h-7.53v-11.49c-3.38,7.91-10.13,11.69-19.31,11.78-11.88,0-19.02-7.53-19.02-19.79v-31.28h7.53v29.35c0,9.07,5.31,14.48,14.1,14.48,10.52-.19,16.7-7.91,16.7-18.93v-24.91h7.53Z"></path><path d="M397.29,237.98c-5.7,0-10.04,2.03-10.04,6.85,0,11.49,28.38,5.6,28.38,23.85,0,9.94-8.88,14.39-18.63,14.39-7.25,0-14.68-2.51-19.51-7.15l2.9-5.5c4.34,4.05,10.91,6.46,16.89,6.46s10.82-2.31,10.91-7.43c.29-12.35-28.19-6.08-28.1-24.04,0-9.65,8.4-13.8,17.67-13.8,6.08,0,11.97,1.83,16.22,4.63l-2.9,5.8c-3.96-2.51-9.07-4.06-13.8-4.06"></path></svg></a>
+    <div style="display:flex; align-items:center; gap:22px; font-size:13.5px; font-weight:500;">
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.home }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.diamantes }}</a>
+      <a href="./CVDentus.dc.html?page=piezos" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.piezos }}</a>
+      <span onClick="{{ toggleProdutos }}" style="color:var(--ink); cursor:pointer; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.produtos }} ▾</span>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.blog }}</a>
+      <a href="./CVDentus.dc.html" style="color:var(--ink); text-decoration:none; padding:10px 8px; border-radius:6px; line-height:1;" style-hover="color:var(--accent);">{{ t.suporte }}</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="display:flex; align-items:center; gap:2px; border:1px solid var(--line); border-radius:8px; padding:2px;">
+        <sc-for list="{{ langOptions }}" as="lg" hint-placeholder-count="3">
+          <span onClick="{{ lg.onClick }}" style="{{ lg.style }}">{{ lg.label }}</span>
+        </sc-for>
+      </div>
+      <label style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; flex-shrink:0; cursor:pointer;">
+        <input type="checkbox" checked="{{ isLightTheme }}" onChange="{{ toggleTheme }}" style="opacity:0; width:0; height:0; position:absolute;">
+        <sc-if value="{{ isLightTheme }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:linear-gradient(180deg,#4dc9ff,#8fdcff);">
+            <svg viewBox="0 0 16 16" style="position:absolute; bottom:2px; right:3px; width:13px; height:13px;" fill="#fff"><path transform="matrix(.77976 0 0 .78395-299.99-418.63)" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path></svg>
+            <span style="position:absolute; top:3px; left:24px; width:16px; height:16px; border-radius:50%; background:#ffd35c; box-shadow:0 0 8px 2px rgba(255,211,92,.7);"></span>
+          </span>
+        </sc-if>
+        <sc-if value="{{ isDarkTheme }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute; inset:0; border-radius:999px; background:#1a1d29;">
+            <span style="position:absolute; top:5px; left:8px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:14px; left:14px; width:2px; height:2px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:8px; left:19px; width:1.5px; height:1.5px; border-radius:50%; background:#fff;"></span>
+            <span style="position:absolute; top:3px; left:4px; width:16px; height:16px; border-radius:50%; background:#e8ecf5; box-shadow:inset -3px -1px 0 0 #c7ccda;"></span>
+          </span>
+        </sc-if>
+      </label>
+
+      <div style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg></div>
+      <div style="cursor:pointer; color:var(--ink); display:flex; align-items:center;"><svg viewBox="0 0 24 24" style="width:21px; height:21px;" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9" cy="20" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="17" cy="20" r="1.3" fill="currentColor" stroke="none"></circle></svg></div>
+    </div>
+  </nav>
+
+<sc-if value="{{ produtosOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; top:64px; left:0; right:0; background:#14151a; z-index:80; display:grid; grid-template-columns:repeat(5,minmax(160px,1fr)); grid-auto-rows:auto; gap:24px 32px; padding:32px clamp(20px,5vw,64px) 36px; max-height:70vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,0.35);">
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Piezos</div>
+          <a href="./Optymus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">OPTYMUS</a>
+          <a href="./Clinical-Plus-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Clinical Plus</a>
+          <a href="./DentSurg-Pro-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">DentSurg Pro</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Pontas</div>
+          <a href="./CVDentus.dc.html?cat=clinicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Clínicas</a>
+          <a href="./CVDentus.dc.html?cat=cirurgicas" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Cirúrgicas</a>
+          <a href="./Elo-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Pontas Compatíveis</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Brocas</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Brocas de Alta Rotação</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Lupas</div>
+          <a href="./Lupas-Landing.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Lupas Odontológicas</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Acessórios</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Acessórios</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 4px 10px;">Kits</div>
+          <a href="./CVDentus.dc.html" style="padding:8px 4px; border-radius:6px; color:#fff; white-space:nowrap; font-size:15px; font-weight:600; text-decoration:none; display:block;" style-hover="color:#9db8e8;">Kits</a>
+      </div>
+  </div>
+</sc-if>
+
+
+  <div style="--bg:#eaf2fb; --ink:#101319; --muted:#57647a; --accent:#587eb4; --accent2:#004388; --line:rgba(0,67,136,0.14); --surface:#ffffff; color:var(--ink);"><!-- HERO -->
+  <section style="position:relative; padding:170px clamp(20px,5vw,64px) 0; text-align:center; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,21,26,0.72) 0%, rgba(20,21,26,0.55) 55%, rgba(247,244,239,0.55) 100%); z-index:0;"></div>
+    <div style="position:absolute; top:-10%; left:50%; transform:translateX(-50%); width:1100px; height:640px; background:radial-gradient(45% 55% at 30% 30%, rgba(124,92,255,0.55), transparent 60%), radial-gradient(50% 60% at 75% 40%, rgba(47,125,253,0.5), transparent 65%), radial-gradient(40% 50% at 50% 80%, rgba(255,175,120,0.35), transparent 70%); filter:blur(40px); z-index:0;"></div>
+    <img loading="lazy" decoding="async" src="uploads/opt/optymus-140b29cc.webp" alt="" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(1200px,110%); opacity:0.16; z-index:0; pointer-events:none;">
+    <div style="position:relative; z-index:1; max-width:760px; margin:0 auto;">
+      <div style="opacity:0; font-family:'Montserrat',sans-serif; font-style:italic; font-size:17px; color:rgba(255,255,255,0.9); margin-bottom:18px; animation:fadeUp 0.8s cubic-bezier(.16,1,.3,1) 1.9s forwards;">{{ tp.heroEyebrow }}</div>
+      <h1 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(38px,6vw,64px); line-height:1.06; letter-spacing:-0.01em; margin:0 0 22px; color:#fff;">
+        <sc-for list="{{ titleLine1 }}" as="L" hint-placeholder-count="17"><span style="{{ L.style }}">{{ L.ch }}</span></sc-for><br>
+        <sc-for list="{{ titleLineMid }}" as="L" hint-placeholder-count="9"><span style="{{ L.style }}">{{ L.ch }}</span></sc-for><br>
+        <sc-for list="{{ titleLine2 }}" as="L" hint-placeholder-count="18"><span style="{{ L.style }}">{{ L.ch }}</span></sc-for>
+      </h1>
+      <div style="opacity:0; font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; color:#fff; margin-bottom:14px; animation:fadeUp 0.9s cubic-bezier(.16,1,.3,1) 2.2s forwards;">{{ tp.heroSubtitle }}</div>
+      <p style="opacity:0; font-size:17px; line-height:1.6; color:rgba(255,255,255,0.88); max-width:480px; margin:0 auto 20px; animation:fadeUp 0.9s cubic-bezier(.16,1,.3,1) 2.3s forwards;">{{ tp.heroDesc }}</p>
+      <p style="opacity:0; font-size:13.5px; line-height:1.6; color:rgba(255,255,255,0.7); max-width:560px; margin:0 auto 32px; animation:fadeUp 0.9s cubic-bezier(.16,1,.3,1) 2.4s forwards;">{{ tp.heroFeatures }}</p>
+    </div>
+    <div id="cadastro" style="{{ heroCadastroGridStyle }}; opacity:0; animation:fadeUp 0.9s cubic-bezier(.16,1,.3,1) 2.35s forwards;">
+      <div style="position:relative;">
+        <div style="position:absolute; left:50%; bottom:6%; transform:translateX(-50%); width:78%; height:60px; background:radial-gradient(ellipse at center, rgba(20,21,26,0.38) 0%, rgba(20,21,26,0.18) 45%, transparent 75%); filter:blur(6px); z-index:0;"></div>
+        <div style="position:absolute; left:50%; top:38%; transform:translateX(-50%); width:120%; height:120%; background:radial-gradient(circle at 50% 50%, rgba(124,92,255,0.28), rgba(47,125,253,0.18) 45%, transparent 72%); filter:blur(30px); z-index:0;"></div>
+        <img decoding="async" fetchpriority="high" src="uploads/opt/opitymus_sem_fundo_sem_sombra_2026.webp" alt="Equipamento OPTYMUS" style="position:relative; z-index:1; width:100%; max-width:520px; object-fit:contain; filter:drop-shadow(0 40px 35px rgba(20,21,26,0.32)); animation:floatY 7s ease-in-out infinite; will-change:transform;">
+      </div>
+
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(255,255,255,0.97); border-radius:20px; padding:48px 36px; text-align:center; box-shadow:0 30px 70px rgba(20,21,26,0.25);">
+          <div style="width:52px; height:52px; border-radius:50%; background:var(--accent); margin:0 auto 18px;"></div>
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:21px; margin:0 0 8px;">{{ tp.formRecebemos }}</h3>
+          <p style="color:var(--muted); font-size:14px; margin:0;">{{ tp.formContato }}</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ handleSubmit }}" style="background:var(--surface); border-radius:20px; padding:36px 32px; display:grid; grid-template-columns:1fr; gap:14px; box-shadow:0 30px 70px rgba(20,21,26,0.25); border:1px solid var(--line);">
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; margin-bottom:2px; color:var(--ink);">{{ tp.formPreencha }}</div>
+          <input required="" type="text" name="nome" placeholder="{{ tp.phNome }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Raleway',sans-serif;">
+          <input required="" type="email" name="email" placeholder="{{ tp.phEmail }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Raleway',sans-serif;">
+          <input required="" type="tel" name="telefone" placeholder="{{ tp.phWhats }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Raleway',sans-serif;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; color:var(--ink); cursor:pointer;">
+              <input required="" type="checkbox" name="consentimento" style="margin-top:2px; accent-color:var(--accent); flex-shrink:0;">
+              <span>{{ tp.consent }}</span>
+            </label>
+            <p style="margin:0; font-size:11.5px; line-height:1.5; color:var(--muted);">{{ tp.consentText }} <a href="#" style="color:var(--accent);">{{ tp.privacyLink }}</a>.</p>
+          </div>
+          <button type="submit" class="cvd-glow-btn" style="border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; margin-top:4px; display:block; width:100%;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:15px; border-radius:999px;">{{ tp.ctaDemo }}</span></button>
+          <p style="margin:0; font-size:11.5px; line-height:1.5; color:var(--muted); text-align:center;">{{ tp.formFooter }}</p>
+        </form>
+      </sc-if>
+    </div>
+  </section></div>
+
+  <!-- SPLIT FEATURE -->
+  <section style="padding:120px clamp(20px,5vw,64px); background:var(--surface);">
+    <div style="{{ splitFeatureGridStyle }}">
+      <div data-reveal="1" style="opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);">
+        <div style="font-family:'Montserrat',sans-serif; font-style:italic; font-size:16px; color:var(--muted); margin-bottom:14px;">{{ tp.splitEyebrow }}</div>
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,4vw,44px); line-height:1.1; margin:0 0 20px;">{{ tp.splitTitle1 }}<br>{{ tp.splitTitle2 }}</h2>
+        <p style="color:var(--muted); font-size:16px; line-height:1.65; margin:0 0 28px; max-width:400px;">{{ tp.splitDesc }}</p>
+        <a href="#diferenciais" style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:var(--ink); border-bottom:1.5px solid var(--ink); padding-bottom:2px;" style-hover="color:var(--accent); border-color:var(--accent);">{{ tp.splitLink }}</a>
+      </div>
+      <div data-reveal="1" style="position:relative; border-radius:24px; overflow:hidden; box-shadow:0 40px 80px rgba(20,21,26,0.15); opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1) 0.1s, transform 0.8s cubic-bezier(.16,1,.3,1) 0.1s;">
+        <img loading="lazy" decoding="async" src="uploads/opitymus_sem_fundo_sem_sombra_2026-72931864.png" alt="Console OPTYMUS" style="width:100%; display:block; object-fit:cover;">
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <!-- DIAMANTE CVD -->
+  <section style="{{ diamondSectionStyle }}">
+    <div style="{{ diamondImgWrapStyle }}">
+      <img loading="lazy" decoding="async" src="uploads/opt/optymus-diamond-tip.webp" alt="Ponta com Diamante CVD" style="width:100%; height:100%; object-fit:cover; -webkit-mask-image:linear-gradient(to right, transparent, rgba(0,0,0,0.85) 30%, black 55%); mask-image:linear-gradient(to right, transparent, rgba(0,0,0,0.85) 30%, black 55%); opacity:0.9;">
+    </div>
+    <div style="position:relative; z-index:1; max-width:1280px; margin:0 auto;">
+      <div data-reveal="1" style="max-width:600px; margin-bottom:56px; opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);">
+        <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(32px,4.4vw,50px); line-height:1.08; margin:0 0 18px; color:var(--ink);">{{ tp.cvdTitle1 }}<span style="font-family:'Montserrat',sans-serif; font-style:italic; font-weight:500;">{{ tp.cvdTitle2 }}</span></h2>
+        <p style="color:var(--muted); font-size:16px; line-height:1.65; margin:0;">{{ tp.cvdDesc }}</p>
+      </div>
+
+      <div data-reveal="1" style="display:flex; flex-direction:column; gap:28px; max-width:480px; opacity:0; transform:translateY(28px); transition:opacity 0.7s cubic-bezier(.16,1,.3,1) 0.1s, transform 0.7s cubic-bezier(.16,1,.3,1) 0.1s;">
+        <div>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:10px;">{{ tp.cvdF1T }}</div>
+          <div style="color:var(--muted); font-size:14.5px; line-height:1.6;">{{ tp.cvdF1D }}</div>
+        </div>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:10px;">{{ tp.cvdF2T }}</div>
+          <div style="color:var(--muted); font-size:14.5px; line-height:1.6;">{{ tp.cvdF2D }}</div>
+        </div>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:10px;">{{ tp.cvdF3T }}</div>
+          <div style="color:var(--muted); font-size:14.5px; line-height:1.6;">{{ tp.cvdF3D }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section id="depoimentos" style="padding:130px clamp(20px,5vw,64px) 90px; background:var(--surface); text-align:center; overflow:hidden;">
+    <div data-reveal="1" style="opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);">
+    <div style="font-family:'Montserrat',sans-serif; font-style:italic; font-size:16px; color:var(--muted); margin-bottom:16px;">{{ tp.depoEyebrow }}</div>
+    <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,4.2vw,46px); line-height:1.1; margin:0 0 20px;">{{ tp.depoTitle1 }}<span style="font-family:'Montserrat',sans-serif; font-style:italic; font-weight:500;">{{ tp.depoTitle2 }}</span></h2>
+    <p style="color:var(--muted); font-size:16px; line-height:1.6; margin:0 auto 36px; max-width:460px;">{{ tp.depoDesc }}</p>
+    </div>
+
+    <div style="{{ testimonialsGridStyle }}">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="9">
+        <div style="background:var(--bg); border:1px solid var(--line); border-radius:18px; padding:24px; display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <image-slot id="{{ t.slotId }}" shape="circle" placeholder="{{ t.placeholder }}" style="width:48px; height:48px; flex-shrink:0;"></image-slot>
+            <div>
+              <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; line-height:1.25;">{{ t.name }}</div>
+              <div style="color:var(--muted); font-size:12px;">{{ t.role }}</div>
+            </div>
+          </div>
+          <p style="font-family:'Montserrat',sans-serif; font-style:italic; font-size:15.5px; line-height:1.5; color:var(--ink); margin:0; flex-grow:1;">“{{ t.quote }}”</p>
+          <button onClick="{{ t.onClick }}" style="align-self:flex-start; font-family:'Montserrat',sans-serif; font-weight:600; font-size:12px; color:var(--accent); background:transparent; border:none; padding:0; cursor:pointer;" style-hover="color:var(--accent2);">{{ tp.verConversa }}</button>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:fixed; inset:0; z-index:200; background:rgba(20,21,26,0.72); display:flex; align-items:center; justify-content:center; padding:40px;">
+        <div onClick="{{ stopPropagation }}" style="position:relative; max-width:640px; width:100%; max-height:94vh; background:#fff; border-radius:20px; overflow:auto; box-shadow:0 40px 90px rgba(0,0,0,0.4);">
+          <button class="cvd-glow-btn" onClick="{{ closeModal }}" style="position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%; border:none; background:rgba(20,21,26,0.75); color:#fff; font-size:18px; cursor:pointer; z-index:2;">×</button>
+          <img loading="lazy" decoding="async" ref="{{ modalImgRef }}" alt="Conversa com {{ activeTestimonial.name }}" style="width:100%; display:block;">
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <!-- 360 GALLERY -->
+  <section id="360" style="padding:120px clamp(20px,5vw,64px); background:var(--surface); text-align:center;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,4vw,44px); margin:0 0 16px;">{{ tp.galTitle }}</h2>
+      <p style="color:var(--muted); font-size:16px; max-width:520px; margin:0 auto 48px;">{{ tp.galDesc }}</p>
+      <div data-reveal="1" style="border-radius:24px; overflow:hidden; box-shadow:0 40px 90px rgba(20,21,26,0.18); background:var(--bg); opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);">
+        <img loading="lazy" decoding="async" src="uploads/opt/optymus_11.webp" alt="OPTYMUS CVDentus" style="width:100%; max-height:600px; object-fit:contain; display:block; margin:0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- GRADIENT CTA BAND -->
+  <section style="position:relative; padding:130px clamp(20px,5vw,64px); overflow:hidden; text-align:center;">
+    <div style="position:absolute; inset:0; background:linear-gradient(135deg, #14151a 0%, #1f2a4d 35%, #2f7dfd 68%, #2D5BFF 100%); z-index:0;"></div>
+    <img loading="lazy" decoding="async" src="uploads/opt/optimus-2.webp" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; mix-blend-mode:soft-light; opacity:0.85; z-index:0;">
+    <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(20,21,26,0.35) 0%, rgba(47,125,253,0.3) 60%, rgba(45,91,255,0.3) 100%); z-index:0;"></div>
+    <div data-reveal="1" style="position:relative; z-index:1; max-width:640px; margin:0 auto; opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);">
+      <div style="font-family:'Montserrat',sans-serif; font-style:italic; font-size:16px; color:rgba(255,255,255,0.75); margin-bottom:16px;">{{ tp.ctaEyebrow }}</div>
+      <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,4.2vw,48px); line-height:1.1; color:#fff; margin:0 0 20px;">{{ tp.ctaTitle }}</h2>
+      
+    </div>
+
+    <div style="--bg:#eaf2fb; --ink:#101319; --muted:#57647a; --accent:#587eb4; --accent2:#004388; --line:rgba(0,67,136,0.14); --surface:#ffffff; color:var(--ink); position:relative; z-index:1; max-width:520px; margin:40px auto 0;">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(255,255,255,0.97); border-radius:20px; padding:48px 36px; text-align:center; box-shadow:0 30px 70px rgba(0,0,0,0.3);">
+          <div style="width:52px; height:52px; border-radius:50%; background:var(--accent); margin:0 auto 18px;"></div>
+          <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:21px; margin:0 0 8px;">{{ tp.formRecebemos }}</h3>
+          <p style="color:var(--muted); font-size:14px; margin:0;">{{ tp.formContato }}</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ handleSubmit }}" style="{{ ctaFormGridStyle }}">
+          <div style="grid-column:1 / -1; font-family:'Montserrat',sans-serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:2px;">{{ tp.formPreencha }}</div>
+          <input required="" type="text" name="nome" placeholder="{{ tp.phNome }}" style="grid-column:1 / -1; width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="email" name="email" placeholder="{{ tp.phEmail }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+          <input required="" type="tel" name="telefone" placeholder="{{ tp.phWhats }}" style="width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--ink); font-size:14px; font-family:'Montserrat',sans-serif;">
+          <div style="grid-column:1 / -1; display:flex; flex-direction:column; gap:6px;">
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; color:var(--ink); cursor:pointer;">
+              <input required="" type="checkbox" name="consentimento" style="margin-top:2px; accent-color:var(--accent); flex-shrink:0;">
+              <span>{{ tp.consent }}</span>
+            </label>
+            <p style="margin:0; font-size:11.5px; line-height:1.5; color:var(--muted);">{{ tp.consentText }} <a href="#" style="color:var(--accent);">{{ tp.privacyLink }}</a>.</p>
+          </div>
+          <button type="submit" class="cvd-glow-btn" style="grid-column:1 / -1; border:none; background:transparent; padding:3px; border-radius:999px; cursor:pointer; margin-top:4px;"><span style="display:block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:14px; color:#fff; background:#14151a; padding:15px; border-radius:999px; text-align:center;">{{ tp.ctaDemo }}</span></button>
+          
+        </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:48px clamp(20px,5vw,64px); background:var(--surface); border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <img loading="lazy" decoding="async" src="uploads/cvdentus-logo.svg" alt="CVDentus" style="height:24px; width:auto;">
+    <div style="color:var(--muted); font-size:13px;">{{ tp.footerCopy }}</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = { produtosOpen: false, produtosSub: 'piezos', submitted: false, activeTestimonial: 0, modalOpen: false, expandedSpecialty: 0, isMobile: (typeof window !== 'undefined' && window.innerWidth < 780), introVisible: true, theme: 'dark', lang: 'pt' };
+
+  toggleTheme() { var next = this.state.theme === 'light' ? 'dark' : 'light'; this.setState({ theme: next }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_theme', next); }
+
+  setLang(l) { this.setState({ lang: l }); if (typeof localStorage !== 'undefined') localStorage.setItem('cvd_lang', l); }
+
+  toggleProdutos() { this.setState(function (s) { return { produtosOpen: !s.produtosOpen, produtosSub: 'piezos' }; }); }
+
+  setProdutosSub(sub) { this.setState({ produtosSub: sub }); }
+
+  onIntroEnd() {
+    this.setState({ introVisible: false });
+  }
+
+  handleResize() {
+    var m = window.innerWidth < 780;
+    if (m !== this.state.isMobile) this.setState({ isMobile: m });
+  }
+
+  toggleSpecialty(i) {
+    this.setState(function (s) { return { expandedSpecialty: s.expandedSpecialty === i ? -1 : i }; });
+  }
+
+  componentDidMount() {
+    if (typeof localStorage !== 'undefined') {
+      var st = localStorage.getItem('cvd_theme');
+      var sl = localStorage.getItem('cvd_lang');
+      if (st || sl) this.setState({ theme: st || this.state.theme, lang: sl || this.state.lang });
+    }
+    this.resizeHandler = this.handleResize.bind(this);
+    window.addEventListener('resize', this.resizeHandler);
+    var els = document.querySelectorAll('[data-reveal]');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    els.forEach(function (el) { observer.observe(el); });
+    this.revealObserver = observer;
+    document.querySelectorAll('video[autoplay]').forEach(function (v) {
+      v.muted = true; v.loop = true; v.playsInline = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.revealObserver) this.revealObserver.disconnect();
+    if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({ submitted: true });
+  }
+
+  setActiveTestimonial(i) {
+    this.setState({ activeTestimonial: i, modalOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalOpen: false });
+  }
+
+  renderVals() {
+    var self = this;
+    var theme = this.state.theme || 'dark';
+    var isLightTheme = theme === 'light';
+    var isDarkTheme = !isLightTheme;
+    var themeVars = isLightTheme
+      ? '--bg:#FFFFFF; --ink:#14161A; --muted:#6B7280; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(0,0,0,0.10); --surface:#F3F5F8;'
+      : '--bg:#121212; --ink:#F1F5F9; --muted:#9AA1AC; --accent:#4C7FFF; --accent2:#0047FF; --line:rgba(255,255,255,0.12); --surface:#1A1D24;';
+    var navBg = isLightTheme ? '#FFFFFF' : '#121212';
+    var logoColor = isLightTheme ? '#14161A' : '#fff';
+    var lang = this.state.lang || 'pt';
+    var I18N = {
+      pt: { home: 'Home', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Suporte', produtos: 'Produtos' },
+      es: { home: 'Inicio', diamantes: 'Diamantes', piezos: 'Piezos', blog: 'Blog', suporte: 'Soporte', produtos: 'Productos' },
+      en: { home: 'Home', diamantes: 'Diamonds', piezos: 'Piezos', blog: 'Blog', suporte: 'Support', produtos: 'Products' }
+    };
+    var t = I18N[lang] || I18N.pt;
+    var T = {
+      pt: { heroEyebrow: 'Sua clínica, em outro nível.', heroSubtitle: 'OPTYMUS CVDentus', heroFeatures: 'Touchscreen de 5" • Programação automática e manual • LED ajustável • Irrigação autoclavável • Baixo nível de ruído', heroDesc: 'Tecnologia Piezoelétrica para uma rotina clínica mais precisa, segura e previsível.', formRecebemos: 'Recebemos seu cadastro.', formContato: 'Nossa equipe entrará em contato em até 1 dia útil.', formPreencha: 'Preencha o formulário abaixo e receba mais informações', phNome: 'Nome', phEmail: 'E-mail', phWhats: 'WhatsApp', phDentista: 'Você é Dentista?', optSim: 'Sim', optNao: 'Não', consent: 'Eu concordo em receber comunicações.', consentText: 'Ao enviar, você concorda em receber contato da CVDentus sobre o DentSurg Pro. Consulte nossa', privacyLink: 'Política de Privacidade', ctaDemo: 'Quero uma Demonstração', formFooter: 'Um consultor da CVDentus entrará em contato via WhatsApp em até 1 dia útil.', splitEyebrow: 'Feito para quem exige mais.', splitTitle1: 'Foco total.', splitTitle2: 'Precisão real.', splitDesc: 'Com controle intuitivo, programação automática e manual, LED ajustável e baixo nível de ruído, o OPTYMUS foi desenvolvido para entregar uma experiência clínica mais precisa e previsível.', splitLink: 'Ver diferenciais →', difTitle1: 'O único piezo que atende ', difTitle2: 'todas as especialidades.', difDesc: 'Um piezo, cinco especialidades: cirurgia, dentística, endodontia, periodontia e prótese.', cvdTitle1: 'Complete a experiência com o exclusivo ', cvdTitle2: 'Diamante CVD.', cvdDesc: 'O piezo DentSurg Pro acompanha um kit de 10 pontas — 5 cirúrgicas e 5 clínicas, à sua escolha — revestidas com diamante patenteado internacionalmente.', cvdF1T: 'Dureza 30x superior', cvdF1D: 'Até 30x mais dura que o esmalte do dente e mais durável que uma ponta convencional, com acabamento superior e maior arrefecimento.', cvdF2T: 'Precisão com menos dor', cvdF2D: 'Menor ruído, maior visibilidade e menor sensibilidade à dor — sem cortar ou machucar tecidos moles.', cvdF3T: 'Biocompatível e inerte', cvdF3D: 'Quimicamente inerte, não corrosiva e biologicamente compatível, com limpeza por cavitação incluída.', depoEyebrow: 'Sem ruído. Só resultado.', depoTitle1: 'Quem usa, ', depoTitle2: 'recomenda.', depoDesc: 'Depoimentos reais de dentistas e clínicas que usam o DentSurg Pro.', verConversa: 'Ver conversa completa →', galTitle: 'Cada detalhe, à mostra.', galDesc: 'Gire e conheça o acabamento piano-black e a engenharia por trás do equipamento.', ctaEyebrow: 'Rápido, simples e sem burocracia.', ctaTitle: 'Pronta para elevar sua clínica?', footerCopy: '© 2026 CVDentus. Todos os direitos reservados.' },
+      es: { heroEyebrow: 'Tu clínica, en otro nivel.', heroSubtitle: 'OPTYMUS CVDentus', heroFeatures: 'Pantalla táctil de 5" • Programación automática y manual • LED ajustable • Irrigación autoclavable • Bajo nivel de ruido', heroDesc: 'Tecnología Piezoeléctrica para una rutina clínica más precisa, segura y previsible.', formRecebemos: 'Recibimos tu registro.', formContato: 'Nuestro equipo se pondrá en contacto en hasta 1 día hábil.', formPreencha: 'Completa el formulario a continuación y recibe más información', phNome: 'Nombre', phEmail: 'Correo electrónico', phWhats: 'WhatsApp', phDentista: '¿Eres dentista?', optSim: 'Sí', optNao: 'No', consent: 'Acepto recibir comunicaciones.', consentText: 'Al enviar, aceptas recibir contacto de CVDentus sobre el DentSurg Pro. Consulta nuestra', privacyLink: 'Política de Privacidad', ctaDemo: 'Quiero una Demostración', formFooter: 'Un consultor de CVDentus se pondrá en contacto por WhatsApp en hasta 1 día hábil.', splitEyebrow: 'Hecho para quien exige más.', splitTitle1: 'Enfoque total.', splitTitle2: 'Precisión real.', splitDesc: 'Con control intuitivo, programación automática y manual, LED ajustable y bajo nivel de ruido, el OPTYMUS fue desarrollado para ofrecer una experiencia clínica más precisa y previsible.', splitLink: 'Ver diferenciales →', difTitle1: 'El único piezo que atiende ', difTitle2: 'todas las especialidades.', difDesc: 'Un piezo, cinco especialidades: cirugía, odontología restauradora, endodoncia, periodoncia y prótesis.', cvdTitle1: 'Completa la experiencia con el exclusivo ', cvdTitle2: 'Diamante CVD.', cvdDesc: 'El piezo DentSurg Pro incluye un kit de 10 insertos — 5 quirúrgicos y 5 clínicos, a tu elección — revestidos con diamante patentado internacionalmente.', cvdF1T: 'Dureza 30 veces superior', cvdF1D: 'Hasta 30 veces más duro que el esmalte dental y más duradero que un inserto convencional, con mejor acabado y mayor enfriamiento.', cvdF2T: 'Precisión con menos dolor', cvdF2D: 'Menor ruido, mayor visibilidad y menor sensibilidad al dolor, sin cortar ni dañar tejidos blandos.', cvdF3T: 'Biocompatible e inerte', cvdF3D: 'Químicamente inerte, no corrosivo y biológicamente compatible, con limpieza por cavitación incluida.', depoEyebrow: 'Sin ruido. Solo resultados.', depoTitle1: 'Quien lo usa, ', depoTitle2: 'lo recomienda.', depoDesc: 'Testimonios reales de dentistas y clínicas que usan el DentSurg Pro.', verConversa: 'Ver conversación completa →', galTitle: 'Cada detalle, a la vista.', galDesc: 'Gira y conoce el acabado piano-black y la ingeniería detrás del equipo.', ctaEyebrow: 'Rápido, simple y sin burocracia.', ctaTitle: '¿Lista para elevar tu clínica?', footerCopy: '© 2026 CVDentus. Todos los derechos reservados.' },
+      en: { heroEyebrow: 'Your clinic, at a new level.', heroSubtitle: 'OPTYMUS CVDentus', heroFeatures: '5" touchscreen • Automatic and manual programming • Adjustable LED • Autoclavable irrigation • Low noise level', heroDesc: 'Piezoelectric technology for a more precise, safe and predictable clinical routine.', formRecebemos: 'We received your submission.', formContato: 'Our team will reach out within 1 business day.', formPreencha: 'Fill out the form below to receive more information', phNome: 'Name', phEmail: 'Email', phWhats: 'WhatsApp', phDentista: 'Are you a dentist?', optSim: 'Yes', optNao: 'No', consent: 'I agree to receive communications.', consentText: 'By submitting, you agree to receive contact from CVDentus about the DentSurg Pro. See our', privacyLink: 'Privacy Policy', ctaDemo: 'I Want a Demo', formFooter: 'A CVDentus consultant will contact you via WhatsApp within 1 business day.', splitEyebrow: 'Built for those who demand more.', splitTitle1: 'Total focus.', splitTitle2: 'Real precision.', splitDesc: 'With intuitive control, automatic and manual programming, adjustable LED and low noise level, the OPTYMUS was built to deliver a more precise and predictable clinical experience.', splitLink: 'See what sets it apart →', difTitle1: 'The only piezo that covers ', difTitle2: 'every specialty.', difDesc: 'One piezo, five specialties: surgery, restorative dentistry, endodontics, periodontics and prosthodontics.', cvdTitle1: 'Complete the experience with the exclusive ', cvdTitle2: 'CVD Diamond.', cvdDesc: 'The DentSurg Pro piezo comes with a kit of 10 inserts — 5 surgical and 5 clinical, your choice — coated with internationally patented diamond.', cvdF1T: '30x superior hardness', cvdF1D: 'Up to 30x harder than tooth enamel and more durable than a conventional insert, with a superior finish and better cooling.', cvdF2T: 'Precision with less pain', cvdF2D: 'Less noise, greater visibility and less pain sensitivity — without cutting or damaging soft tissue.', cvdF3T: 'Biocompatible and inert', cvdF3D: 'Chemically inert, non-corrosive and biologically compatible, with cavitation cleaning included.', depoEyebrow: 'No noise. Just results.', depoTitle1: 'Those who use it, ', depoTitle2: 'recommend it.', depoDesc: 'Real testimonials from dentists and clinics using the DentSurg Pro.', verConversa: 'See full conversation →', galTitle: 'Every detail, on display.', galDesc: 'Rotate to explore the piano-black finish and the engineering behind the unit.', ctaEyebrow: 'Fast, simple and hassle-free.', ctaTitle: 'Ready to elevate your clinic?', footerCopy: '© 2026 CVDentus. All rights reserved.' }
+    };
+    var tp = T[lang] || T.pt;
+    var specialtyNames = { pt: { Cirurgia: 'Cirurgia', 'Dentística': 'Dentística', Endodontia: 'Endodontia', Periodontia: 'Periodontia', 'Prótese': 'Prótese' }, es: { Cirurgia: 'Cirugía', 'Dentística': 'Odontología Restauradora', Endodontia: 'Endodoncia', Periodontia: 'Periodoncia', 'Prótese': 'Prótesis' }, en: { Cirurgia: 'Surgery', 'Dentística': 'Restorative Dentistry', Endodontia: 'Endodontics', Periodontia: 'Periodontics', 'Prótese': 'Prosthodontics' } }[lang];
+    var roleNames = { pt: { 'Cliente CVDentus': 'Cliente CVDentus', 'Nota 10 · Recomenda a amigos': 'Nota 10 · Recomenda a amigos' }, es: { 'Cliente CVDentus': 'Cliente CVDentus', 'Nota 10 · Recomenda a amigos': 'Calificación 10 · Recomienda a amigos' }, en: { 'Cliente CVDentus': 'CVDentus Customer', 'Nota 10 · Recomenda a amigos': 'Rating 10 · Recommends to friends' } }[lang];
+    var langOptions = ['pt','es','en'].map(function (l) {
+      var active = lang === l;
+      return { key: l, label: l.toUpperCase(), onClick: function () { self.setLang(l); }, style: "cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:5px 9px;border-radius:6px;" + (active ? 'background:var(--accent2);color:#fff' : 'color:var(--muted)') };
+    });
+    var isMobile = this.state.isMobile;
+    var navLinksStyle = isMobile ? 'display:none;' : 'display:flex; gap:34px; font-size:14px; font-weight:500;';
+    var heroCadastroGridStyle = 'position:relative; z-index:1; max-width:1160px; margin:44px auto 0; padding-bottom:' + (isMobile ? '60px' : '100px') + '; display:grid; grid-template-columns:' + (isMobile ? '1fr' : '1.05fr 0.95fr') + '; gap:' + (isMobile ? '32px' : '48px') + '; align-items:center; text-align:left;';
+    var splitFeatureGridStyle = 'max-width:1280px; margin:0 auto; display:grid; grid-template-columns:' + (isMobile ? '1fr' : '0.85fr 1.15fr') + '; gap:' + (isMobile ? '36px' : '64px') + '; align-items:center;';
+    var diamondImgWrapStyle = isMobile ? 'display:none;' : 'position:absolute; top:0; right:0; width:52%; height:100%; z-index:0;';
+    var testimonialsGridStyle = 'display:grid; grid-template-columns:repeat(' + (isMobile ? '1' : '3') + ',1fr); gap:20px; max-width:1180px; margin:0 auto; text-align:left;';
+    var ctaFormGridStyle = 'background:rgba(255,255,255,0.97); border-radius:20px; padding:36px 32px; display:grid; grid-template-columns:' + (isMobile ? '1fr' : '1fr 1fr') + '; gap:14px; box-shadow:0 30px 70px rgba(0,0,0,0.3); text-align:left;';
+    var diamondSectionStyle = 'position:relative; padding:' + (isMobile ? '90px' : '130px') + ' clamp(20px,5vw,64px); overflow:hidden; background:var(--bg);';
+    function buildLetters(text, italicStart, italicEnd, delayBase) {
+      var out = [];
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i] === ' ' ? '\u00A0' : text[i];
+        var isItalic = italicStart !== undefined && i >= italicStart && i < italicEnd;
+        out.push({
+          ch: ch,
+          key: i,
+          style: 'display:inline-block; opacity:0; font-family:' + (isItalic ? "'Inter',serif; font-style:italic; font-weight:500;" : "inherit;") + ' animation:fadeUp 0.5s cubic-bezier(.16,1,.3,1) ' + (delayBase + i * 0.032).toFixed(3) + 's forwards;'
+        });
+      }
+      return out;
+    }
+    var heroTitleParts = { pt: ['Mais controle.', 'Mais precisão.', 'Mais possibilidades.', 0, 30], es: ['Más control.', 'Más precisión.', 'Más posibilidades.', 0, 30], en: ['More control.', 'More precision.', 'More possibilities.', 0, 30] }[lang];
+    var titleLine1 = buildLetters(heroTitleParts[0], undefined, undefined, 2.05);
+    var titleLineMid = buildLetters(heroTitleParts[1], undefined, undefined, 2.05 + heroTitleParts[0].length * 0.032 + 0.1);
+    var titleLine2 = buildLetters(heroTitleParts[2], heroTitleParts[3], heroTitleParts[4], 2.05 + (heroTitleParts[0].length + heroTitleParts[1].length) * 0.032 + 0.25);
+    var rawTestimonials = [
+      { name: 'Danielle Riera Paschotto', role: 'Cliente CVDentus', quote: 'Sempre que eu tenho procedimento pra fazer \u00e9 com ele que eu fa\u00e7o. Adoro a CVDentus, com certeza 10!', shot: 'assets/testimonial1.jpg' },
+      { name: 'Willian Duarte Oliveira CP', role: 'Nota 10 \u00b7 Recomenda a amigos', quote: 'Recomendo para v\u00e1rios amigos. Inclusive j\u00e1 estou pensando em fazer o upgrade.', shot: 'assets/testimonial2.jpg' },
+      { name: 'Gabriela Tonon CP', role: 'Cliente CVDentus', quote: 'Estou gostando muito do aparelho, me adaptei bem. Achei ele de f\u00e1cil manuseio!', shot: 'assets/testimonial3.jpg' },
+      { name: 'Karina Ourique Espindola Turbai Rangel - CP', role: 'Cliente CVDentus', quote: 'Estou gostando bastante. Os pacientes relatam menos sensibilidade na raspagem.', shot: 'assets/testimonial4.jpg' },
+      { name: 'Clinica Odontologica Life Kids CP', role: 'Nota 10 \u00b7 Clínica parceira', quote: 'Est\u00e1 tudo indo super bem. Super feliz com o meu piezo. Super recomendaria.', shot: 'assets/testimonial5.jpg' },
+      { name: 'Murilo de Araujo Neris', role: 'Nota 10 \u00b7 Uso e aprovo', quote: 'Sempre recomendo, pois eu uso e aprovo.', shot: 'assets/testimonial6.jpg' },
+      { name: 'Renato Kenji OP', role: 'Nota 10 \u00b7 Feedback CVDentus', quote: 'Estamos bem satisfeitos.', shot: 'assets/testimonial7.jpg' },
+      { name: 'Vilmar Junior de Sa Formiga', role: 'Nota 10 \u00b7 Reposi\u00e7\u00e3o de pontas', quote: 'Reposi\u00e7\u00e3o de pontas que j\u00e1 s\u00e3o um xod\u00f3 por aqui.', shot: 'assets/testimonial8.jpg' },
+      { name: 'Luis Claudio de Barros e Silva', role: 'Nota 10 \u00b7 Cirurgia com ponta Piezo', quote: 'Usei a ponta piezo pra corte \u00f3sseo que comprei, amei! A cirurgia ficou linda, foi r\u00e1pida, o paciente evoluiu sem edema.', shot: 'assets/testimonial9.jpg' },
+    ];
+    var active = this.state.activeTestimonial;
+    var testimonials = rawTestimonials.map(function (t, i) {
+      return {
+        name: t.name,
+        role: roleNames[t.role] || t.role,
+        quote: t.quote,
+        shot: t.shot,
+        slotId: 'testimonial-' + i,
+        placeholder: 'Foto de ' + t.name.replace('Dr. ', '').replace('Dra. ', ''),
+        onClick: function () { self.setActiveTestimonial(i); },
+      };
+    });
+    return {
+      themeVars: themeVars, navBg: navBg, logoColor: logoColor, isLightTheme: isLightTheme, isDarkTheme: isDarkTheme, toggleTheme: self.toggleTheme.bind(self), t: t, lang: lang, langOptions: langOptions, tp: tp,
+      introVisible: this.state.introVisible,
+      produtosOpen: this.state.produtosOpen,
+      toggleProdutos: self.toggleProdutos.bind(self),
+      subPiezos: function () { self.setProdutosSub('piezos'); },
+      subPontas: function () { self.setProdutosSub('pontas'); },
+      produtosSubIsPiezos: this.state.produtosSub === 'piezos',
+      produtosSubIsPontas: this.state.produtosSub === 'pontas',
+      piezosRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'piezos' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      pontasRowStyle: 'cursor:pointer; padding:12px 14px; border-radius:8px; font-weight:600; font-size:15px; white-space:nowrap; ' + (this.state.produtosSub === 'pontas' ? 'background:var(--bg); color:var(--accent);' : 'color:var(--ink);'),
+      titleLine1: titleLine1,
+      titleLineMid: titleLineMid,
+      titleLine2: titleLine2,
+      onIntroEnd: self.onIntroEnd.bind(self),
+      navLinksStyle: navLinksStyle,
+      heroCadastroGridStyle: heroCadastroGridStyle,
+      splitFeatureGridStyle: splitFeatureGridStyle,
+      diamondImgWrapStyle: diamondImgWrapStyle,
+      diamondSectionStyle: diamondSectionStyle,
+      testimonialsGridStyle: testimonialsGridStyle,
+      ctaFormGridStyle: ctaFormGridStyle,
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      handleSubmit: self.handleSubmit.bind(self),
+      testimonials: testimonials,
+      activeTestimonial: testimonials[active],
+      modalOpen: this.state.modalOpen,
+      modalImgRef: function (el) {
+        if (el && self.state.modalOpen) el.src = testimonials[active].shot;
+      },
+      closeModal: self.closeModal.bind(self),
+      stopPropagation: function (e) { e.stopPropagation(); },
+      heroVideoRef: function (el) {
+        if (!el) return;
+        el.muted = true; el.loop = true; el.playsInline = true;
+        var p = el.play(); if (p && p.catch) p.catch(function () {});
+      },
+      rotateVideoRef: function (el) {
+        if (!el) return;
+        el.muted = true; el.loop = true; el.playsInline = true;
+        var p = el.play(); if (p && p.catch) p.catch(function () {});
+      },
+      ctaVideoRef: function (el) {
+        if (!el) return;
+        el.muted = true; el.loop = true; el.playsInline = true;
+        var p = el.play(); if (p && p.catch) p.catch(function () {});
+      },
+      specialties: [
+        { icon: 'assets/icon-cirurgia.png', name: 'Cirurgia', procedures: 'Descolamento da membrana sinusal \u2022 Descolamento da gengiva e peri\u00f3steo \u2022 Tuneliza\u00e7\u00e3o (para enxerto \u00f3sseo) \u2022 Osteotomia pr\u00f3xima a tecidos moles \u2022 Coleta de osso aut\u00f3geno \u2022 Fracionamento de raiz anquilosada \u2022 Lateraliza\u00e7\u00e3o do nervo alveolar inferior \u2022 Remo\u00e7\u00e3o de bloco \u00f3sseo (enxerto \u00f3sseo) \u2022 Levantamento de seio maxilar \u2022 Expans\u00e3o de rebordo alveolar \u2022 Distra\u00e7\u00e3o osteg\u00eanica \u2022 Disjun\u00e7\u00e3o de maxila \u2022 Prepara\u00e7\u00e3o para coloca\u00e7\u00e3o de implante' },
+        { icon: 'assets/icon-dentistica.png', name: 'Dent\u00edstica', procedures: 'Acabamento em resinas \u2022 Acesso \u00e0 c\u00e2mara pulpar \u2022 Biselamento \u2022 Contorno papilar \u2022 Preparo cavit\u00e1rio \u2022 Preparo cavit\u00e1rio de \u00e2ngulo, em t\u00fanel e com acesso total \u2022 Preparo cavit\u00e1rio maior na regi\u00e3o proximal (mesial ou distal) \u2022 Preparo cavit\u00e1rio na regi\u00e3o proximal \u2022 Preparo cavit\u00e1rio na regi\u00e3o vestibular \u2022 Preparo cavit\u00e1rio pequeno na regi\u00e3o proximal (mesial ou distal) \u2022 Preparo em \u00e2ngulos \u2022 Preparo em sulcos com les\u00f5es mais incipientes \u2022 Preparos cavit\u00e1rios na regi\u00e3o lingual de dentes anteriores \u2022 Remo\u00e7\u00e3o de am\u00e1lgama ou material restaurador' },
+        { icon: 'assets/icon-endodontia.png', name: 'Endodontia', procedures: 'Acesso \u00e0 c\u00e2mara pulpar \u2022 Alisamento das paredes da c\u00e2mara pulpar sem desgaste do Assoalho \u2022 Apicectomia \u2022 Aplainamento das paredes da c\u00e2mara pulpar \u2022 Cirurgia de retropreparo em posteriores \u2022 Compactar e aplainar a guta percha \u2022 Corte e termoplastifica\u00e7\u00e3o da guta percha \u2022 Desgaste na regi\u00e3o de istimo \u2022 Refinamento da entrada do canal \u2022 Irriga\u00e7\u00e3o passiva (P.U.I.) \u2022 Limpeza de canais achatados e de canais em retratamento \u2022 Localiza\u00e7\u00e3o e desobstru\u00e7\u00e3o de canal \u2022 Preparo da c\u00e2mara pulpar \u2022 Remo\u00e7\u00e3o de c\u00e1lculo/istimo \u2022 Remo\u00e7\u00e3o de c\u00e1lculos e \u00edstimo na c\u00e2mara pulpar \u2022 Remo\u00e7\u00e3o de lima fraturada \u2022 Remo\u00e7\u00e3o de n\u00facleo' },
+        { icon: 'assets/icon-periodontia.png', name: 'Periodontia', procedures: 'Alisamento radicular \u2022 Flapless \u2022 Aumento de coroa com e sem abertura de retalho (redu\u00e7\u00e3o do volume \u00f3sseo) \u2022 Peeling gengival \u2022 Raspagem na regi\u00e3o de furca \u2022 Raspagem subgengival com diamante \u2022 Raspagem subgengival convencional \u2022 Raspagem supragengival com diamante \u2022 Raspagem supragengival com diamante nas laterias \u2022 Raspagem supragengival convencional' },
+        { icon: 'assets/icon-protese.png', name: 'Pr\u00f3tese', procedures: 'Alisamento e polimento de preparo para laminados \u2022 Biselamento \u2022 Cimenta\u00e7\u00e3o de lentes e pr\u00f3teses \u2022 Hibridiza\u00e7\u00e3o do selamento dentin\u00e1rio imediato de laminados \u2022 Odontosec\u00e7\u00e3o \u2022 Preparo de laminados para lente de contato (margem estreita e larga) \u2022 Polimento prot\u00e9tico (margem estreita e larga) \u2022 Remo\u00e7\u00e3o de cimento provis\u00f3rio - Cad/Cam \u2022 Remo\u00e7\u00e3o de facetas e lentes de contato \u2022 Remo\u00e7\u00e3o de n\u00facleo \u2022 T\u00e9rmino de preparo prot\u00e9tico (margem estreita e larga) \u2022 Texturiza\u00e7\u00e3o' },
+      ].map(function (sp, i) {
+        var expanded = self.state.expandedSpecialty === i;
+        return {
+          name: specialtyNames[sp.name] || sp.name,
+          procedures: sp.procedures,
+          expanded: expanded,
+          chevronRotate: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+          onToggle: function () { self.toggleSpecialty(i); },
+          iconRef: function (el) { if (el) el.src = sp.icon; },
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>
