@@ -1,8 +1,9 @@
 # Editor / project state — not part of the site
 CLAUDE.md
 github.md
-.image-slots.state.json
 .thumbnail
+# NB: .image-slots.state.json IS kept — image-slot.js fetches it as a sibling
+# at runtime to restore manually filled image slots (e.g. testimonials).
 
 # Frozen pre-conversion bundles (replaced by the .dc.html pages, nothing links to them)
 Optymus-Landing.html
